@@ -18,11 +18,13 @@ You'll need the following to run your own distra instance:
 ```
 git clone https://github.com/distralive/distra && cd distra
 ```
+
 ### Install the dependencies
 
 ```
 pnpm i
 ```
+
 ### Initializing the database
 
 If you haven't setup a MySQL instance, set it up on your local machine directly, or with [Docker](https://www.docker.com/).
@@ -56,6 +58,7 @@ and then add the value in the `DATABASE_URL` variable.
 ```
 pnpm db:push
 ```
+
 ### Setup NextAuth.js
 
 1. Create a secret for NextAuth.js.
@@ -71,11 +74,13 @@ The output should be copied to .env.
 2. Add GitHub OAuth secrets.
 
 Get the secrets by [creating a new OAuth application](https://github.com/settings/applications/new), and copy and paste the values on the .env file.
+
 ### Initializing MinIO
 
 You can follow the [docs](https://min.io/docs/minio/container/index.html) to setup a MinIO instance.
 
 After that, the access key and the secret key is copied to the .env file.
+
 ### Run a development server
 
 To run a development server, run:
