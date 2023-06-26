@@ -11,6 +11,11 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
+enum ReactionType {
+  LIKE
+  DISLIKE
+}
+
 model Account {
   id                String  @id @default(cuid())
   userId            String
@@ -39,13 +44,18 @@ model Session {
 }
 
 model User {
-  id            String    @id @default(cuid())
+  id            String        @id @default(cuid())
   name          String?
-  email         String?   @unique
+  username      String?       @unique
+  email         String?       @unique
   emailVerified DateTime?
   image         String?
   accounts      Account[]
   sessions      Session[]
+  videos        Video[]
+  reactions     Reaction[]
+  comments      Comment[]
+  commentVotes  CommentVote[]
 }
 
 model VerificationToken {
@@ -54,4 +64,57 @@ model VerificationToken {
   expires    DateTime
 
   @@unique([identifier, token])
+}
+
+model Video {
+  id           String   @id @default(cuid())
+  title        String
+  description  String?
+  thumbnailKey String
+  videoKey     String
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+
+  author   User   @relation(fields: [authorId], references: [id])
+  authorId String
+
+  reactions Reaction[]
+  comments  Comment[]
+}
+
+model Comment {
+  id        String   @id @default(cuid())
+  text      String
+  createdAt DateTime @default(now())
+  author    User     @relation(fields: [authorId], references: [id])
+  authorId  String
+  video     Video    @relation(fields: [videoId], references: [id])
+  videoId   String
+
+  replyToId String?
+  replyTo   Comment?  @relation("ReplyTo", fields: [replyToId], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  replies   Comment[] @relation("ReplyTo")
+
+  votes     CommentVote[]
+  commentId String?
+}
+
+model Reaction {
+  user    User         @relation(fields: [userId], references: [id])
+  userId  String
+  video   Video        @relation(fields: [videoId], references: [id])
+  videoId String
+  type    ReactionType
+
+  @@id([userId, videoId])
+}
+
+model CommentVote {
+  user      User         @relation(fields: [userId], references: [id])
+  userId    String
+  comment   Comment      @relation(fields: [commentId], references: [id], onDelete: Cascade)
+  commentId String
+  type      ReactionType
+
+  @@id([userId, commentId])
 }
