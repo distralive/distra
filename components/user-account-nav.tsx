@@ -14,7 +14,7 @@ import {
 import { UserAvatar } from "@/components/user-avatar";
 
 interface UserAccountNavProps extends React.HTMLAttributes<HTMLDivElement> {
-  user: Pick<User, "name" | "image" | "email">;
+  user: Pick<User, "name" | "image" | "email" | "id">;
 }
 
 export function UserAccountNav({ user }: UserAccountNavProps) {
@@ -39,7 +39,7 @@ export function UserAccountNav({ user }: UserAccountNavProps) {
         </div>
         <DropdownMenuSeparator />
         <DropdownMenuItem asChild>
-          <Link href="/">Your channel</Link>
+          <Link href={`/user/${user.id}`}>Your channel</Link>
         </DropdownMenuItem>
 
         <DropdownMenuItem asChild>
