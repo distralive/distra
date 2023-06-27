@@ -54,18 +54,23 @@ export async function POST(req: Request) {
   const schema = z.object({
     title: z.string().max(128),
     description: z.string().max(5000).optional(),
+    videoKey: z.string(),
   });
 
   try {
-    const body = schema.safeParse(req.body);
+    const rawBody = await req.arrayBuffer();
+    const bodyStr = new TextDecoder("utf-8").decode(rawBody);
+
+    const body = JSON.parse(bodyStr);
+    const validBody = schema.safeParse(body);
 
     if (session) {
-      if (body.success) {
-        // The video should be uploaded to S3 first, then the metadata is saved to the DB.
-        const video = await db.video.create({
+      if (validBody.success) {
+        await db.video.create({
           data: {
-            title: body.data.title,
-            description: body.data.description,
+            title: validBody.data.title,
+            description: validBody.data.description,
+            videoKey: validBody.data.videoKey,
             authorId: session.user.id,
           },
         });
@@ -74,10 +79,13 @@ export async function POST(req: Request) {
           headers: { "Content-Type": "application/json" },
         });
       } else {
-        return new Response(JSON.stringify({ error: "Title is required." }), {
-          status: 400,
-          headers: { "Content-Type": "application/json" },
-        });
+        return new Response(
+          JSON.stringify({ success: false, error: "Missing fields." }),
+          {
+            status: 400,
+            headers: { "Content-Type": "application/json" },
+          }
+        );
       }
     } else {
       return new Response(
