@@ -3,8 +3,95 @@
 import { useCallback, useState } from "react";
 import { useDropzone } from "react-dropzone";
 
+import { Input } from "@/components/ui/input";
+import { Textarea } from "@/components/ui/textarea";
+import { Button } from "@/components/ui/button";
+import {
+  Form,
+  FormControl,
+  FormDescription,
+  FormField,
+  FormItem,
+  FormLabel,
+  FormMessage,
+} from "@/components/ui/form";
+
+import { zodResolver } from "@hookform/resolvers/zod";
+import { useForm } from "react-hook-form";
+
+import * as z from "zod";
+
+const formSchema = z.object({
+  title: z.string().max(128),
+  description: z.string().max(5000).optional(),
+  videoKey: z.string().optional(),
+});
+
+function UploadForm({ videoKey }: { videoKey: string }) {
+  const form = useForm<z.infer<typeof formSchema>>({
+    resolver: zodResolver(formSchema),
+    defaultValues: {
+      title: "",
+      description: "",
+    },
+  });
+
+  function onSubmit(values: z.infer<typeof formSchema>) {
+    console.log(values);
+    fetch("/api/video/new", {
+      method: "POST",
+      body: JSON.stringify({
+        title: values.title,
+        description: values.description,
+        videoKey,
+      }),
+      headers: {
+        "Content-Type": "application/json",
+      },
+    });
+  }
+
+  return (
+    <Form {...form}>
+      <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
+        <FormField
+          control={form.control}
+          name="title"
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel>Title</FormLabel>
+              <FormControl>
+                <Input placeholder="Enter your video's title" {...field} />
+              </FormControl>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+        <FormField
+          control={form.control}
+          name="description"
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel>Description</FormLabel>
+              <FormControl>
+                <Textarea
+                  placeholder="Enter your video's description"
+                  {...field}
+                />
+              </FormControl>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+        <Button type="submit">Submit</Button>
+      </form>
+    </Form>
+  );
+}
+
 export function DragDrop() {
   const [uploaded, setUploaded] = useState(false);
+  const [videoKey, setVideoKey] = useState("");
 
   const onDrop = useCallback((acceptedFiles: File[]) => {
     // Get the first file from the acceptedFiles array
@@ -24,6 +111,8 @@ export function DragDrop() {
 
         formData.append("Content-Type", file.type);
         formData.append("file", file);
+
+        setVideoKey(data.fields.key);
 
         // Make the POST request to S3
         return fetch(data.url, {
@@ -49,19 +138,7 @@ export function DragDrop() {
   });
 
   if (uploaded) {
-    return (
-      <form>
-        <label>
-          Title:
-          <input type="text" name="title" />
-        </label>
-        <label>
-          Description:
-          <textarea name="description"></textarea>
-        </label>
-        <input type="submit" value="Submit" />
-      </form>
-    );
+    return <UploadForm videoKey={videoKey} />;
   } else {
     return (
       <div {...getRootProps()} className="p-48">
