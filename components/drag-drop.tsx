@@ -137,20 +137,18 @@ export function DragDrop() {
     maxFiles: 1,
   });
 
-  if (uploaded) {
-    return <UploadForm videoKey={videoKey} />;
-  } else {
-    return (
-      <div {...getRootProps()} className="p-48">
-        <input {...getInputProps()} />
-        {isDragActive ? (
-          <p className="text-sm">Drop the files here ...</p>
-        ) : (
-          <p className="text-sm">
-            Drag and drop video files here, or click to select files
-          </p>
-        )}
-      </div>
-    );
-  }
+  return uploaded ? (
+    <UploadForm videoKey={videoKey} />
+  ) : (
+    <div {...getRootProps()} className="p-48">
+      <input {...getInputProps()} />
+      {isDragActive ? (
+        <p className="text-sm">Drop the files here ...</p>
+      ) : (
+        <p className="text-sm">
+          Drag and drop video files here, or click to select files
+        </p>
+      )}
+    </div>
+  );
 }
