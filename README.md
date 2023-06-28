@@ -1,6 +1,6 @@
 # distra
 
-distra is a free and open source video sharing platform, built with [Next.js](https://nextjs.org) 13, and some microservices with [Rust](https://rust-lang.org).
+distra is a free and open source video sharing platform that prioritizes free access and cutting-edge technology to provide a unique and user-friendly experience for sharing, viewing, and interacting with video content.
 
 ## Local development
 
