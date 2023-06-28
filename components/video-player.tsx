@@ -20,7 +20,7 @@ export function VideoPlayer({ videoSource }: { videoSource: string }) {
   }, []);
 
   return (
-    <video ref={videoRef} controls className="aspect-video">
+    <video ref={videoRef} controls className="aspect-video flex">
       <source src={videoSource} type="video/mp4" />
     </video>
   );
