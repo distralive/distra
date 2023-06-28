@@ -1,41 +1,27 @@
 "use client";
 
 import React, { useEffect, useRef } from "react";
-import videojs from "video.js";
-import "video.js/dist/video-js.css";
+import Plyr from "plyr";
+import "plyr/dist/plyr.css";
 
-interface VideoPlayerProps {
-  options: videojs.PlayerOptions;
-}
-
-const VideoPlayer: React.FC<VideoPlayerProps> = (props) => {
-  const videoNode = useRef<HTMLVideoElement>(null);
-  const defaultOptions = {
-    autoplay: true,
-    controls: true,
-  };
-
-  const options = Object.assign({}, defaultOptions, props.options);
+export function VideoPlayer({ videoSource }: { videoSource: string }) {
+  const videoRef = useRef<HTMLVideoElement | null>(null);
 
   useEffect(() => {
-    if (videoNode.current) {
-      const player = videojs(videoNode.current, options, () => {
-        console.log("player is ready");
-      });
+    if (!videoRef.current) return;
+    const player = new Plyr(videoRef.current);
 
-      return () => {
-        if (player) {
-          player.dispose();
-        }
-      };
-    }
-  }, [options]);
+    // Clean up to avoid memory leaks
+    return () => {
+      if (player) {
+        player.destroy();
+      }
+    };
+  }, []);
 
   return (
-    <div data-vjs-player>
-      <video ref={videoNode} className="video-js" />
-    </div>
+    <video ref={videoRef} controls className="aspect-video">
+      <source src={videoSource} type="video/mp4" />
+    </video>
   );
-};
-
-export { VideoPlayer };
+}

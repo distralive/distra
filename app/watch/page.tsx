@@ -35,14 +35,5 @@ export default async function Watch({
 
   const url = await getSignedUrl(s3Client, command, { expiresIn: 86400 });
 
-  const videoOptions = {
-    sources: [
-      {
-        src: url,
-        type: "video/mp4",
-      },
-    ],
-  };
-
-  return v ? <VideoPlayer options={videoOptions} /> : <div>404</div>;
+  return v ? <VideoPlayer videoSource={url} /> : <div>404</div>;
 }

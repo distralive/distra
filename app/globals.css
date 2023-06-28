@@ -36,6 +36,8 @@
     --ring: 215 20.2% 65.1%;
 
     --radius: 0.5rem;
+
+    --plyr-color-main: #4b54f3;
   }
 
   .dark {
@@ -67,6 +69,8 @@
     --destructive-foreground: 0 85.7% 97.3%;
 
     --ring: 217.2 32.6% 17.5%;
+
+    --plyr-color-main: #4b54f3;
   }
 }
 
