@@ -20,6 +20,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 
 import * as z from "zod";
+import { useRouter } from "next/navigation";
 
 const formSchema = z.object({
   title: z.string().max(128),
@@ -36,6 +37,8 @@ function UploadForm({ videoKey }: { videoKey: string }) {
     },
   });
 
+  const router = useRouter();
+
   function onSubmit(values: z.infer<typeof formSchema>) {
     console.log(values);
     fetch("/api/video/new", {
@@ -48,6 +51,12 @@ function UploadForm({ videoKey }: { videoKey: string }) {
       headers: {
         "Content-Type": "application/json",
       },
+    }).then((response) => {
+      if (!response.ok) {
+        throw new Error("Network response was not ok");
+      }
+      // Successful submission, redirect to homepage
+      router.push("/");
     });
   }
 
