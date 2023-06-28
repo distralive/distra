@@ -53,7 +53,10 @@ function UploadForm({ videoKey }: { videoKey: string }) {
 
   return (
     <Form {...form}>
-      <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
+      <form
+        onSubmit={form.handleSubmit(onSubmit)}
+        className="flex flex-col p-3 space-y-2 w-96"
+      >
         <FormField
           control={form.control}
           name="title"
