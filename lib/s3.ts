@@ -1,7 +1,14 @@
+import { env } from "@/env.mjs";
 import { S3Client } from "@aws-sdk/client-s3";
 
-export const s3Client = new S3Client({
-  region: "us-east-1",
-  endpoint: "http://localhost:9000",
-  forcePathStyle: true,
-});
+const endpoint = env.MINIO_ENDPOINT;
+
+export const s3Client = endpoint
+  ? new S3Client({
+      region: "us-east-1",
+      endpoint,
+      forcePathStyle: true,
+    })
+  : new S3Client({
+      region: env.AWS_S3_REGION,
+    });
