@@ -4,6 +4,8 @@ import { UserAccountNav } from "@/components/user-account-nav";
 import Link from "next/link";
 import { authOptions } from "@/lib/auth";
 import { Plus } from "lucide-react";
+import Image from "next/image";
+import distraLogo from "@/public/distra.svg";
 
 export async function Navbar() {
   const session = await getServerSession(authOptions);
@@ -13,7 +15,15 @@ export async function Navbar() {
       <div className="container max-w-7xl h-full mx-auto flex items-center justify-between gap-2">
         <div className="justify-start flex">
           <Link href="/">
-            <p className="font-display">distra</p>
+            <div className="flex gap-1.5">
+              <Image
+                alt="distra's logo"
+                src={distraLogo}
+                width={24}
+                height={24}
+              />
+              <p className="font-display">distra</p>
+            </div>
           </Link>
         </div>
         <div className="justify-end flex items-center space-x-1.5">
