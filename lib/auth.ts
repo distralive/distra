@@ -29,6 +29,7 @@ export const authOptions: NextAuthOptions = {
       },
     }),
   },
+  // @ts-expect-error Nullable adapter
   adapter: PrismaAdapter(db),
   providers: [
     GithubProvider({
