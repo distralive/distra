@@ -6,7 +6,7 @@ import { authOptions } from "@/lib/auth";
 import { Plus } from "lucide-react";
 import Image from "next/image";
 import distraLogo from "@/public/distra.svg";
-import { ModeToggle } from "./mode-toggle";
+import { ModeToggle } from "@/components/mode-toggle";
 
 export async function Navbar() {
   const session = await getServerSession(authOptions);
