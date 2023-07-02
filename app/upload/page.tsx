@@ -1,4 +1,4 @@
-import { DragDrop } from "@/components/drag-drop";
+import { UploadDragDrop } from "@/components/upload-drag-drop";
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
 
@@ -20,7 +20,7 @@ export default function Upload() {
           </div>
         </div>
         <div className="flex">
-          <DragDrop />
+          <UploadDragDrop />
         </div>
       </div>
     </div>
