@@ -5,7 +5,7 @@ const endpoint = env.S3_ENDPOINT;
 
 export const s3Client = endpoint
   ? new S3Client({
-      region: "us-east-1",
+      region: "auto",
       endpoint,
       forcePathStyle: true,
     })
