@@ -6,6 +6,7 @@ import { authOptions } from "@/lib/auth";
 import { Plus } from "lucide-react";
 import Image from "next/image";
 import distraLogo from "@/public/distra.svg";
+import { ModeToggle } from "./mode-toggle";
 
 export async function Navbar() {
   const session = await getServerSession(authOptions);
@@ -29,7 +30,8 @@ export async function Navbar() {
         <div className="justify-end flex items-center space-x-1.5">
           <Link
             href="/upload"
-            className="hover:bg-white/10 transition-all p-1.5 rounded-full"
+            aria-label="Upload a video"
+            className="hover:bg-accent transition-all p-2 rounded-md"
           >
             <Plus />
           </Link>
@@ -40,6 +42,7 @@ export async function Navbar() {
               Sign In
             </Link>
           )}
+          <ModeToggle />
         </div>
       </div>
     </div>
