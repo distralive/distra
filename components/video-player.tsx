@@ -4,7 +4,13 @@ import React, { useEffect, useRef } from "react";
 import Plyr from "plyr";
 import "plyr/dist/plyr.css";
 
-export function VideoPlayer({ videoSource }: { videoSource: string }) {
+export function VideoPlayer({
+  videoSource,
+  mimeType,
+}: {
+  videoSource: string;
+  mimeType: string;
+}) {
   const videoRef = useRef<HTMLVideoElement | null>(null);
 
   useEffect(() => {
@@ -21,7 +27,7 @@ export function VideoPlayer({ videoSource }: { videoSource: string }) {
 
   return (
     <video ref={videoRef} controls className="aspect-video flex">
-      <source src={videoSource} type="video/mp4" />
+      <source src={videoSource} type={mimeType} />
     </video>
   );
 }
