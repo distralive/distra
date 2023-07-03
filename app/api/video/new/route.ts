@@ -13,22 +13,45 @@ export async function GET(req: Request) {
 
   try {
     if (session) {
-      const key = `${session.user.id}-${Date.now()}-video`;
-      const postParams: PresignedPostOptions = {
+      const videoKey = `${session.user.id}-${Date.now()}-video`;
+      const videoParams: PresignedPostOptions = {
         Bucket: "distra-videos",
-        Key: key,
+        Key: videoKey,
         Expires: 7200,
         Conditions: [
           ["starts-with", "$Content-Type", "video/"], // Only allow video content types
         ],
       };
 
-      const presignedPost = await createPresignedPost(s3Client, postParams);
+      const thumbnailKey = `${session.user.id}-${Date.now()}-thumbnail`;
+      const thumbnailParams: PresignedPostOptions = {
+        Bucket: "distra-thumbnails",
+        Key: thumbnailKey,
+        Expires: 600,
+        Conditions: [
+          ["starts-with", "$Content-Type", "image/"], // Only allow image content types
+        ],
+      };
 
-      return new Response(JSON.stringify(presignedPost), {
-        status: 200,
-        headers: { "Content-Type": "application/json" },
-      });
+      const videoPresignedUrl = await createPresignedPost(
+        s3Client,
+        videoParams
+      );
+      const thumbnailPresignedUrl = await createPresignedPost(
+        s3Client,
+        thumbnailParams
+      );
+
+      return new Response(
+        JSON.stringify({
+          video: videoPresignedUrl,
+          thumbnail: thumbnailPresignedUrl,
+        }),
+        {
+          status: 200,
+          headers: { "Content-Type": "application/json" },
+        }
+      );
     } else {
       return new Response(
         JSON.stringify({
@@ -55,6 +78,7 @@ export async function POST(req: Request) {
     title: z.string().max(128),
     description: z.string().max(5000).optional(),
     videoKey: z.string(),
+    thumbnailKey: z.string().optional(),
   });
 
   try {
@@ -71,6 +95,7 @@ export async function POST(req: Request) {
             title: validBody.data.title,
             description: validBody.data.description,
             videoKey: validBody.data.videoKey,
+            thumbnailKey: validBody.data.thumbnailKey,
             authorId: session.user.id,
           },
         });
