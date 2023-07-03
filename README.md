@@ -102,3 +102,13 @@ After that, to start the production build, run:
 ```
 pnpm start
 ```
+
+### Deploying the app
+
+If you'd choose to deploy your own instance somewhere, we would recommend these:
+
+- [Vercel](https://vercel.com) for running the Next.js app
+- [PlanetScale](https://planetscale.com) for running the database, based on MySQL
+- [Amazon S3](https://aws.amazon.com/s3/) for running the object storage, which hosts the videos and thumbnails
+
+*note: We are not sponsored/endorsed by any of these sites.*
