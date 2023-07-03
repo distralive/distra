@@ -18,7 +18,8 @@ import { useForm } from "react-hook-form";
 import * as z from "zod";
 import { useRouter } from "next/navigation";
 import { useCallback, useState } from "react";
-import { useDropzone } from "react-dropzone";
+
+import { DragDrop } from "@/components/drag-drop";
 
 const formSchema = z.object({
   title: z.string().max(128),
@@ -60,12 +61,6 @@ export function UploadForm({ videoKey }: { videoKey: string }) {
         console.error("Error:", error);
       });
   }, []);
-
-  const { getRootProps, getInputProps, isDragActive } = useDropzone({
-    onDrop,
-    accept: { "image/*": [".png", ".jpg", ".jpeg", ".avif", ".webp"] },
-    maxFiles: 1,
-  });
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -136,21 +131,11 @@ export function UploadForm({ videoKey }: { videoKey: string }) {
         />
         <Button type="submit">Submit</Button>
       </form>
-      <div className="p-2">
-        <div
-          {...getRootProps()}
-          className="p-16 rounded-md border h-full flex items-center"
-        >
-          <input {...getInputProps()} />
-          {isDragActive ? (
-            <p className="text-sm">Drop the files here ...</p>
-          ) : (
-            <p className="text-sm">
-              Drag and drop the thumbnail here, or click to select files
-            </p>
-          )}
-        </div>
-      </div>
+      <DragDrop
+        onDrop={onDrop}
+        accept={{ "image/*": [".png", ".jpg", ".jpeg", ".avif", ".webp"] }}
+        multiple={false}
+      />
     </Form>
   );
 }
