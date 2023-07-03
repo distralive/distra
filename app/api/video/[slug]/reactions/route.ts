@@ -58,7 +58,7 @@ export async function POST(
           throw new Error("Video not found");
         }
 
-        let reaction = await db.reaction.findUnique({
+        const reaction = await db.reaction.findUnique({
           where: { userId_videoId: { userId, videoId: video.id } },
         });
 
