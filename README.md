@@ -110,5 +110,6 @@ If you'd choose to deploy your own instance somewhere, we would recommend these:
 - [Vercel](https://vercel.com) for running the Next.js app
 - [PlanetScale](https://planetscale.com) for running the database, based on MySQL
 - [Amazon S3](https://aws.amazon.com/s3/) for running the object storage, which hosts the videos and thumbnails
+  - *[Cloudflare R2](https://www.cloudflare.com/products/r2/) may work, but since this app uses presigned POST urls for uploads, which isn't supported by it, we wouldn't recommend this*
 
 *note: We are not sponsored/endorsed by any of these sites.*
