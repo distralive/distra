@@ -6,7 +6,6 @@ import { Button } from "@/components/ui/button";
 import {
   Form,
   FormControl,
-  FormDescription,
   FormField,
   FormItem,
   FormLabel,
@@ -18,6 +17,8 @@ import { useForm } from "react-hook-form";
 
 import * as z from "zod";
 import { useRouter } from "next/navigation";
+import { useCallback, useState } from "react";
+import { useDropzone } from "react-dropzone";
 
 const formSchema = z.object({
   title: z.string().max(128),
@@ -26,6 +27,46 @@ const formSchema = z.object({
 });
 
 export function UploadForm({ videoKey }: { videoKey: string }) {
+  const [thumbnailKey, setThumbnailKey] = useState("");
+
+  const onDrop = useCallback((acceptedFiles: File[]) => {
+    const file = acceptedFiles[0];
+
+    fetch("/api/video/new")
+      .then((res) => res.json())
+      .then((data) => {
+        const formData = new FormData();
+
+        Object.entries(data.thumbnail.fields).forEach(([key, value]) => {
+          formData.append(key, String(value));
+        });
+
+        formData.append("Content-Type", file.type);
+        formData.append("file", file);
+
+        setThumbnailKey(data.thumbnail.fields.key);
+
+        return fetch(data.thumbnail.url, {
+          method: "POST",
+          body: formData,
+        });
+      })
+      .then((response) => {
+        if (!response.ok) {
+          throw new Error("Network response was not ok");
+        }
+      })
+      .catch((error) => {
+        console.error("Error:", error);
+      });
+  }, []);
+
+  const { getRootProps, getInputProps, isDragActive } = useDropzone({
+    onDrop,
+    accept: { "image/*": [".png", ".jpg", ".jpeg", ".avif", ".webp"] },
+    maxFiles: 1,
+  });
+
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
@@ -43,6 +84,7 @@ export function UploadForm({ videoKey }: { videoKey: string }) {
       body: JSON.stringify({
         title: values.title,
         description: values.description,
+        thumbnailKey,
         videoKey,
       }),
       headers: {
@@ -94,6 +136,21 @@ export function UploadForm({ videoKey }: { videoKey: string }) {
         />
         <Button type="submit">Submit</Button>
       </form>
+      <div className="p-2">
+        <div
+          {...getRootProps()}
+          className="p-16 rounded-md border h-full flex items-center"
+        >
+          <input {...getInputProps()} />
+          {isDragActive ? (
+            <p className="text-sm">Drop the files here ...</p>
+          ) : (
+            <p className="text-sm">
+              Drag and drop the thumbnail here, or click to select files
+            </p>
+          )}
+        </div>
+      </div>
     </Form>
   );
 }
