@@ -8,7 +8,12 @@
     "start": "next start",
     "lint": "next lint",
     "postinstall": "prisma generate",
-    "db:push": "prisma db push"
+    "db:push": "prisma db push",
+    "prepare": "husky install",
+    "release": "standard-version",
+    "release:minor": "standard-version --release-as minor",
+    "release:patch": "standard-version --release-as patch",
+    "release:major": "standard-version --release-as major"
   },
   "dependencies": {
     "@auth/prisma-adapter": "^1.0.0",
@@ -16,6 +21,8 @@
     "@aws-sdk/s3-presigned-post": "^3.359.0",
     "@aws-sdk/s3-request-presigner": "^3.360.0",
     "@aws-sdk/signature-v4-crt": "^3.363.0",
+    "@commitlint/cli": "^17.6.6",
+    "@commitlint/config-conventional": "^17.6.6",
     "@hookform/resolvers": "^3.1.1",
     "@prisma/client": "^4.16.1",
     "@radix-ui/react-avatar": "^1.0.3",
@@ -55,6 +62,8 @@
   },
   "devDependencies": {
     "@iconify/react": "^4.1.1",
-    "prisma": "^4.16.1"
+    "husky": "^8.0.0",
+    "prisma": "^4.16.1",
+    "standard-version": "^9.5.0"
   }
 }
