@@ -1,6 +1,6 @@
 import Image from "next/image";
 import Link from "next/link";
-import { Button } from "@/components/ui/button";
+import { FollowButton } from "@/components/follow-button";
 
 export function ChannelCard({ id, data }: { id: string; data: any }) {
   return (
@@ -27,7 +27,7 @@ export function ChannelCard({ id, data }: { id: string; data: any }) {
         </div>
       </div>
       <div className="flex items-center justify-end">
-        <Button>Subscribe</Button>
+        <FollowButton userId={id} />
       </div>
     </div>
   );

@@ -1,3 +1,4 @@
+import { FollowButton } from "@/components/follow-button";
 import { Button } from "@/components/ui/button";
 import { VideoPlayer } from "@/components/video-player";
 import { VideoReactionButtons } from "@/components/video-reaction-buttons";
@@ -79,7 +80,9 @@ export default async function Watch({
               </div>
             </div>
           </Link>
-          <Button className="ml-6">Follow</Button>
+          <div className="ml-6">
+            <FollowButton userId={metadata?.authorId as string} />
+          </div>
         </div>
         <div className="flex justify-end">
           <VideoReactionButtons videoId={v as string} />
