@@ -1,11 +1,14 @@
+import { CommentSection } from "@/components/comment-section";
 import { FollowButton } from "@/components/follow-button";
 import { Button } from "@/components/ui/button";
 import { VideoPlayer } from "@/components/video-player";
 import { VideoReactionButtons } from "@/components/video-reaction-buttons";
+import { authOptions } from "@/lib/auth";
 import { db } from "@/lib/db";
 import { s3Client } from "@/lib/s3";
 import { GetObjectCommand, HeadObjectCommand } from "@aws-sdk/client-s3";
 import { getSignedUrl } from "@aws-sdk/s3-request-presigner";
+import { getServerSession } from "next-auth";
 import Image from "next/image";
 import Link from "next/link";
 
@@ -29,6 +32,7 @@ export default async function Watch({
   searchParams: { [key: string]: string | string[] | undefined };
 }) {
   const { v } = searchParams;
+  const session = await getServerSession(authOptions);
 
   const metadata = await db.video.findUnique({
     where: {
@@ -40,7 +44,21 @@ export default async function Watch({
       description: true,
       author: true,
       authorId: true,
-      comments: true,
+      comments: {
+        where: {
+          videoId: v as string,
+        },
+        select: {
+          id: true,
+          text: true,
+          author: true,
+          createdAt: true,
+          commentId: true,
+          replies: true,
+          replyToId: true,
+          votes: true,
+        },
+      },
       createdAt: true,
       thumbnailKey: true,
       videoKey: true,
@@ -88,6 +106,7 @@ export default async function Watch({
           <VideoReactionButtons videoId={v as string} />
         </div>
       </div>
+      <CommentSection session={session} video={metadata} />
     </div>
   ) : (
     <div>404</div>
