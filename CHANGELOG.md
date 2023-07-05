@@ -2,6 +2,22 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [0.2.0](https://github.com/distralive/distra/compare/v0.1.2...v0.2.0) (2023-07-05)
+
+
+### Features
+
+* add ability to comment on videos and see them ([19027fd](https://github.com/distralive/distra/commits/19027fdd814608509014a8ad8716838eb0820820))
+* add the ability to comment and reply to videos ([e721f5a](https://github.com/distralive/distra/commits/e721f5a0fd99d8f7db2aa04044dfd03de673f701))
+* add the ability to follow people ([3e58e97](https://github.com/distralive/distra/commits/3e58e977355d40c8fcd92c384efb8fb57a049809))
+* **components:** add follow button component ([97286c2](https://github.com/distralive/distra/commits/97286c2495f2045d51e508cba722ee32c541268f))
+
+
+### Bug Fixes
+
+* invalid GET export on follow route ([0afc6b7](https://github.com/distralive/distra/commits/0afc6b7092b792f39ba40c4fa48da338abe2042e))
+* move follow route 1 folder back ([ce5e54b](https://github.com/distralive/distra/commits/ce5e54be50a3114a37dbe56a6cc8a6663b7e0d07))
+
 ### [0.1.2](https://github.com/distralive/distra/compare/v0.1.1...v0.1.2) (2023-07-03)
 
 ### 0.1.1 (2023-07-03)
