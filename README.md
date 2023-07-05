@@ -81,6 +81,10 @@ You can follow the [docs](https://min.io/docs/minio/container/index.html) to set
 After that, the endpoint, the access key and the secret key is copied to the .env file.
 By default MinIO's endpoint is `http://localhost:9000`.
 
+Then, you open up `http://localhost:9000` or whatever your MinIO endpoint is on the browser.
+Then, you sign into it with the access key and the secret key.
+And then, you create 2 buckets that are called `distra-videos` and `distra-thumbnails` respectively.
+
 ### Run a development server
 
 To run a development server, run:
