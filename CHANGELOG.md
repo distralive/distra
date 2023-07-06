@@ -2,6 +2,15 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [0.3.0](https://github.com/distralive/distra/compare/v0.2.0...v0.3.0) (2023-07-06)
+
+
+### Features
+
+* add a route for deleting videos ([e1052f9](https://github.com/distralive/distra/commits/e1052f982ab580205055844a4052a4311c0e3c4d))
+* add ability to delete a video ([425b4a7](https://github.com/distralive/distra/commits/425b4a73f0bab18200af2d1d9bfb775c59f64e04))
+* **components:** add iconify wrapper (for server components) ([9dd0e1c](https://github.com/distralive/distra/commits/9dd0e1cfa904655267b573a894c849099add2d2a))
+
 ## [0.2.0](https://github.com/distralive/distra/compare/v0.1.2...v0.2.0) (2023-07-05)
 
 
