@@ -1,10 +1,16 @@
+import { authOptions } from "@/lib/auth";
 import { s3Client } from "@/lib/s3";
 import { GetObjectCommand } from "@aws-sdk/client-s3";
 import { getSignedUrl } from "@aws-sdk/s3-request-presigner";
+import { Icon } from "@/components/iconify-icon";
+import { getServerSession } from "next-auth";
 import Image from "next/image";
 import Link from "next/link";
+import { DeleteVideoButton } from "./delete-video-button";
 
 export async function VideoCard({ video }: { key: string; video: any }) {
+  const session = await getServerSession(authOptions);
+
   if (video.thumbnailKey) {
     const command = new GetObjectCommand({
       Bucket: "distra-thumbnails",
@@ -31,14 +37,23 @@ export async function VideoCard({ video }: { key: string; video: any }) {
     );
   } else {
     return (
-      <Link href={`/watch?v=${video.id}`}>
-        <div className="space-y-1.5">
-          <div>
-            <p className="text-sm font-semibold">{video.title}</p>
-            <p className="text-sm">2 views</p>
+      <div className="flex justify-between">
+        <Link href={`/watch?v=${video.id}`}>
+          <div className="space-y-1.5">
+            <div>
+              <p className="text-sm font-semibold">{video.title}</p>
+              <p className="text-sm">2 views</p>
+            </div>
           </div>
-        </div>
-      </Link>
+        </Link>
+        {video.authorId === session?.user.id ? (
+          <div>
+            <DeleteVideoButton video={video} />
+          </div>
+        ) : (
+          <></>
+        )}
+      </div>
     );
   }
 }
