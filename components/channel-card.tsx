@@ -16,7 +16,9 @@ export function ChannelCard({ id, data }: { id: string; data: any }) {
         <div className="flex flex-col space-y-2">
           <div className="flex flex-col">
             <p className="font-semibold text-2xl">{data.name}</p>
-            <p>0 followers • {data.videos.length} videos</p>
+            <p>
+              {data.followers.length} followers • {data.videos.length} videos
+            </p>
           </div>
           <Link href={`/user/${id}/about`}>
             <div className="flex space-x-1 text-foreground/70">

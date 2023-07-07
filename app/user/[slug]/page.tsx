@@ -13,6 +13,7 @@ async function getUser(id: string) {
       username: true,
       image: true,
       videos: true,
+      followers: true,
     },
   });
 

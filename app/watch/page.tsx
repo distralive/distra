@@ -43,7 +43,14 @@ export default async function Watch({
       id: true,
       title: true,
       description: true,
-      author: true,
+      author: {
+        select: {
+          id: true,
+          name: true,
+          image: true,
+          followers: true,
+        },
+      },
       authorId: true,
       comments: {
         where: {
@@ -90,7 +97,9 @@ export default async function Watch({
               />
               <div className="flex flex-col justify-start">
                 <p className="font-semibold">{metadata?.author?.name}</p>
-                <p className="text-sm text-foreground/80">2 followers</p>
+                <p className="text-sm text-foreground/80">
+                  {metadata?.author.followers.length} followers
+                </p>
               </div>
             </div>
           </Link>
