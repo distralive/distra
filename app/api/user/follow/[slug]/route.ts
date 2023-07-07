@@ -82,13 +82,22 @@ export async function POST(
         });
 
         if (existingFollow) {
+          await db.follow.delete({
+            where: {
+              followingId_followedId: {
+                followingId: session.user.id,
+                followedId: followedId,
+              },
+            },
+          });
+
           return new Response(
             JSON.stringify({
-              success: false,
-              error: "You are already following this user.",
+              success: true,
+              message: "You have unfollowed this user.",
             }),
             {
-              status: 400,
+              status: 200,
               headers: { "Content-Type": "application/json" },
             }
           );
