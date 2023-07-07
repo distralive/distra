@@ -3,6 +3,7 @@ import { FollowButton } from "@/components/follow-button";
 import { Button } from "@/components/ui/button";
 import { VideoPlayer } from "@/components/video-player";
 import { VideoReactionButtons } from "@/components/video-reaction-buttons";
+import { env } from "@/env.mjs";
 import { authOptions } from "@/lib/auth";
 import { db } from "@/lib/db";
 import { s3Client } from "@/lib/s3";
@@ -66,12 +67,7 @@ export default async function Watch({
     },
   });
 
-  const command = new GetObjectCommand({
-    Bucket: "distra-videos",
-    Key: metadata?.videoKey,
-  });
-
-  const url = await getSignedUrl(s3Client, command, { expiresIn: 86400 });
+  const url = `${env.S3_ENDPOINT}/distra-videos/${metadata?.videoKey}`;
 
   let mimeType = await getMimeType("distra-videos", metadata?.videoKey ?? "");
 
