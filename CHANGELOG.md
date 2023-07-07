@@ -2,6 +2,14 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [0.3.1](https://github.com/distralive/distra/compare/v0.3.0...v0.3.1) (2023-07-07)
+
+
+### Features
+
+* add proper follower counter ([ad32c09](https://github.com/distralive/distra/commits/ad32c090a476b32585469c073359e5f339bb9914))
+* add proper unfollow handler ([ef7478a](https://github.com/distralive/distra/commits/ef7478a9ba38ec66af82649b745a94d1c66798fb))
+
 ## [0.3.0](https://github.com/distralive/distra/compare/v0.2.0...v0.3.0) (2023-07-06)
 
 
