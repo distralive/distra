@@ -117,3 +117,9 @@ If you'd choose to deploy your own instance somewhere, we would recommend these:
   - *[Cloudflare R2](https://www.cloudflare.com/products/r2/) may work, but since this app uses presigned POST urls for uploads, which isn't supported by it, we wouldn't recommend this*
 
 *note: We are not sponsored/endorsed by any of these sites.*
+
+## Hosted instances
+
+These are hosted instances of distra to try out.
+
+- [distra.ihatethedemonkahl.com](https://distra.ihatethedemonkahl.com/)
