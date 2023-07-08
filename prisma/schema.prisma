@@ -16,6 +16,12 @@ enum ReactionType {
   DISLIKE
 }
 
+enum VideoVisibilityType {
+  PUBLIC
+  UNLISTED
+  PRIVATE
+}
+
 model Account {
   id                String  @id @default(cuid())
   userId            String
@@ -69,13 +75,14 @@ model VerificationToken {
 }
 
 model Video {
-  id           String   @id @default(cuid())
-  title        String
-  description  String?
-  thumbnailKey String?
-  videoKey     String
-  createdAt    DateTime @default(now())
-  updatedAt    DateTime @updatedAt
+  id              String              @id @default(cuid())
+  title           String
+  description     String?
+  thumbnailKey    String?
+  videoKey        String
+  videoVisibility VideoVisibilityType @default(PUBLIC)
+  createdAt       DateTime            @default(now())
+  updatedAt       DateTime            @updatedAt
 
   author   User   @relation(fields: [authorId], references: [id])
   authorId String
