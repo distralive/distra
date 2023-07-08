@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [0.4.0](https://github.com/distralive/distra/compare/v0.3.1...v0.4.0) (2023-07-08)
+
+
+### Features
+
+* add hamburger menu on home page ([69d6827](https://github.com/distralive/distra/commits/69d6827f15c0d3f9afc4e3aeaa97eedb5826df17))
+
 ### [0.3.1](https://github.com/distralive/distra/compare/v0.3.0...v0.3.1) (2023-07-07)
 
 
