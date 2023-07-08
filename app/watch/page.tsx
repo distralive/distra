@@ -71,10 +71,20 @@ export default async function Watch({
       thumbnailKey: true,
       videoKey: true,
       reactions: true,
+      videoVisibility: true,
     },
   });
 
-  const url = `${env.S3_ENDPOINT}/distra-videos/${metadata?.videoKey}`;
+  const command = new GetObjectCommand({
+    Bucket: "distra-private-videos",
+    Key: metadata?.videoKey,
+  });
+
+  const url =
+    metadata?.videoVisibility === "PUBLIC" ||
+    metadata?.videoVisibility === "UNLISTED"
+      ? `${env.S3_ENDPOINT}/distra-videos/${metadata?.videoKey}`
+      : await getSignedUrl(s3Client, command);
 
   let mimeType = await getMimeType("distra-videos", metadata?.videoKey ?? "");
 
