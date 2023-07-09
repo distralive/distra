@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [0.4.2](https://github.com/distralive/distra/compare/v0.4.1...v0.4.2) (2023-07-09)
+
+
+### Bug Fixes
+
+* missing prop in FollowButton ([c77ca83](https://github.com/distralive/distra/commits/c77ca83927dc66b3073537b54df66dffbbbee7be))
+
 ### [0.4.1](https://github.com/distralive/distra/compare/v0.4.0...v0.4.1) (2023-07-09)
 
 
