@@ -19,8 +19,8 @@ export async function VideoCard({ video }: { key: string; video: any }) {
 
     const url = await getSignedUrl(s3Client, command, { expiresIn: 86400 });
     return (
-      <Link href={`/watch?v=${video.id}`}>
-        <div className="space-y-1.5">
+      <div className="space-y-1.5">
+        <Link href={`/watch?v=${video.id}`}>
           <Image
             alt={video.title}
             src={url ?? ""}
@@ -28,31 +28,47 @@ export async function VideoCard({ video }: { key: string; video: any }) {
             height={180}
             className="rounded-md"
           />
+        </Link>
+
+        <div className="flex justify-between">
           <div>
             <p className="text-sm font-semibold">{video.title}</p>
             <p className="text-sm">2 views</p>
           </div>
+          <div>
+            {video.authorId === session?.user.id ? (
+              <div>
+                <DeleteVideoButton video={video} />
+              </div>
+            ) : (
+              <></>
+            )}
+          </div>
         </div>
-      </Link>
+      </div>
     );
   } else {
     return (
       <div className="flex justify-between">
-        <Link href={`/watch?v=${video.id}`}>
-          <div className="space-y-1.5">
-            <div>
-              <p className="text-sm font-semibold">{video.title}</p>
-              <p className="text-sm">2 views</p>
+        <div className="flex flex-col justify-start">
+          <Link href={`/watch?v=${video.id}`}>
+            <div className="space-y-1.5">
+              <div>
+                <p className="text-sm font-semibold">{video.title}</p>
+                <p className="text-sm">2 views</p>
+              </div>
             </div>
-          </div>
-        </Link>
-        {video.authorId === session?.user.id ? (
-          <div>
-            <DeleteVideoButton video={video} />
-          </div>
-        ) : (
-          <></>
-        )}
+          </Link>
+        </div>
+        <div className="flex justify-end">
+          {video.authorId === session?.user.id ? (
+            <div>
+              <DeleteVideoButton video={video} />
+            </div>
+          ) : (
+            <></>
+          )}
+        </div>
       </div>
     );
   }
