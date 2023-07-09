@@ -123,3 +123,14 @@ If you'd choose to deploy your own instance somewhere, we would recommend these:
 These are hosted instances of distra to try out.
 
 - [distra.ihatethedemonkahl.com](https://distra.ihatethedemonkahl.com/)
+
+## Contributors
+
+<!-- ALL-CONTRIBUTORS-LIST:START - Do not remove or modify this section -->
+<!-- prettier-ignore-start -->
+<!-- markdownlint-disable -->
+
+<!-- markdownlint-restore -->
+<!-- prettier-ignore-end -->
+
+<!-- ALL-CONTRIBUTORS-LIST:END -->
