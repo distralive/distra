@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [0.4.3](https://github.com/distralive/distra/compare/v0.4.2...v0.4.3) (2023-07-09)
+
+
+### Features
+
+* actually fully delete videos when the route is called ([d23dd75](https://github.com/distralive/distra/commits/d23dd7534890f833edb5472afedf774e4d84e404))
+
 ### [0.4.2](https://github.com/distralive/distra/compare/v0.4.1...v0.4.2) (2023-07-09)
 
 
