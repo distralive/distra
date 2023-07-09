@@ -114,7 +114,10 @@ export default async function Watch({
             </div>
           </Link>
           <div className="ml-6">
-            <FollowButton userId={metadata?.authorId as string} />
+            <FollowButton
+              userId={metadata?.authorId as string}
+              session={session}
+            />
           </div>
         </div>
         <div className="flex justify-end">
