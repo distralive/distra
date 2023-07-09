@@ -1,0 +1,28 @@
+{
+  "files": [
+    "README.md"
+  ],
+  "imageSize": 100,
+  "commit": false,
+  "commitType": "docs",
+  "commitConvention": "angular",
+  "contributors": [
+    {
+      "login": "frolleks",
+      "name": "Frolleks",
+      "avatar_url": "https://avatars.githubusercontent.com/u/83149723?v=4",
+      "profile": "https://github.com/frolleks",
+      "contributions": [
+        "code",
+        "maintenance",
+        "ideas"
+      ]
+    }
+  ],
+  "contributorsPerLine": 7,
+  "skipCi": true,
+  "repoType": "github",
+  "repoHost": "https://github.com",
+  "projectName": "distra",
+  "projectOwner": "distralive"
+}
