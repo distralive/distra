@@ -2,6 +2,21 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [0.4.1](https://github.com/distralive/distra/compare/v0.4.0...v0.4.1) (2023-07-09)
+
+
+### Features
+
+* add following user pfp if the user has one ([321ba4a](https://github.com/distralive/distra/commits/321ba4ab568ef641b0d3be758b96b23634af60f2))
+* add hamburger-menu to user page ([7bf411d](https://github.com/distralive/distra/commits/7bf411d2e15c2d8938a6794d0872e4ac52e3af37))
+* add types of visibility to videos ([17b84f7](https://github.com/distralive/distra/commits/17b84f75f144898d9b73f4d9092198dd294165fa))
+* use signed urls if the video is private ([c194c54](https://github.com/distralive/distra/commits/c194c54d027aae62ab8badf47cdfda93cfb8695a))
+
+
+### Bug Fixes
+
+* delete button not showing on videos with thumbnails ([f777c4e](https://github.com/distralive/distra/commits/f777c4efc291a23075efac9d78461c89a35c7b32))
+
 ## [0.4.0](https://github.com/distralive/distra/compare/v0.3.1...v0.4.0) (2023-07-08)
 
 
