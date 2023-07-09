@@ -1,5 +1,6 @@
 import { authOptions } from "@/lib/auth";
 import { db } from "@/lib/db";
+import { DeleteObjectCommand } from "@aws-sdk/client-s3";
 import { getServerSession } from "next-auth";
 
 export async function GET(
@@ -54,9 +55,32 @@ export async function DELETE(
         select: {
           id: true,
           authorId: true,
+          videoKey: true,
+          thumbnailKey: true,
+          videoVisibility: true,
         },
       });
       if (video?.authorId === session?.user.id) {
+        if (video.thumbnailKey)
+          new DeleteObjectCommand({
+            Bucket: "distra-thumbnails",
+            Key: video.thumbnailKey,
+          });
+
+        if (
+          video.videoVisibility === "PUBLIC" ||
+          video.videoVisibility === "UNLISTED"
+        )
+          new DeleteObjectCommand({
+            Bucket: "distra-videos",
+            Key: video.videoKey,
+          });
+        else
+          new DeleteObjectCommand({
+            Bucket: "distra-private-videos",
+            Key: video.videoKey,
+          });
+
         await db.video.delete({
           where: {
             id,
