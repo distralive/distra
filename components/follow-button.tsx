@@ -2,8 +2,15 @@
 
 import { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
+import type { Session } from "next-auth";
 
-export function FollowButton({ userId }: { userId: string }) {
+export function FollowButton({
+  userId,
+  session,
+}: {
+  userId: string;
+  session: Session | null;
+}) {
   const [isLoading, setIsLoading] = useState(false);
   const [isFollowing, setIsFollowing] = useState(false);
 
@@ -55,9 +62,13 @@ export function FollowButton({ userId }: { userId: string }) {
     }
   };
 
-  return (
-    <Button onClick={handleFollow} disabled={isLoading}>
-      {isLoading ? "Processing..." : isFollowing ? "Followed" : "Follow"}
-    </Button>
-  );
+  if (session?.user?.id === userId) {
+    return <Button disabled>Follow</Button>;
+  } else {
+    return (
+      <Button onClick={handleFollow} disabled={isLoading}>
+        {isLoading ? "Processing..." : isFollowing ? "Followed" : "Follow"}
+      </Button>
+    );
+  }
 }
