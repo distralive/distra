@@ -145,7 +145,11 @@ If you'd choose to deploy your own instance somewhere, we would recommend these:
 
 These are hosted instances of distra to try out.
 
-- [distra.ihatethedemonkahl.com](https://distra.ihatethedemonkahl.com/)
+| Country | Link to instance                      | Cloudflare enabled | Is up? |   |
+|:-------:|---------------------------------------|--------------------|--------|---|
+| 🇺🇸      | https://distra.ihatethedemonkahl.com/ | ✅                  | ✅      |   |
+|         |                                       |                    |        |   |
+|         |                                       |                    |        |   |
 
 ## Contributors
 
