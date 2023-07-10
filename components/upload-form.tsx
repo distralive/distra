@@ -27,7 +27,13 @@ const formSchema = z.object({
   videoKey: z.string().optional(),
 });
 
-export function UploadForm({ videoKey }: { videoKey: string }) {
+export function UploadForm({
+  videoKey,
+  uploadStatus,
+}: {
+  videoKey: string;
+  uploadStatus: string;
+}) {
   const [thumbnailKey, setThumbnailKey] = useState("");
 
   const onDrop = useCallback((acceptedFiles: File[]) => {
@@ -73,6 +79,10 @@ export function UploadForm({ videoKey }: { videoKey: string }) {
   const router = useRouter();
 
   function onSubmit(values: z.infer<typeof formSchema>) {
+    if (uploadStatus !== "finished") {
+      return;
+    }
+
     console.log(values);
     fetch("/api/video/new", {
       method: "POST",
@@ -129,7 +139,9 @@ export function UploadForm({ videoKey }: { videoKey: string }) {
             </FormItem>
           )}
         />
-        <Button type="submit">Submit</Button>
+        <Button type="submit" disabled={uploadStatus !== "finished"}>
+          Submit
+        </Button>
       </form>
       <DragDrop
         onDrop={onDrop}

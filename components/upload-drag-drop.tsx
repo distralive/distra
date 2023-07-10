@@ -5,10 +5,10 @@ import { UploadForm } from "@/components/upload-form";
 import { DragDrop } from "@/components/drag-drop";
 
 export function UploadDragDrop() {
-  const [uploaded, setUploaded] = useState(false);
+  const [uploadStatus, setUploadStatus] = useState("idle");
   const [videoKey, setVideoKey] = useState("");
 
-  const onDrop = useCallback((acceptedFiles: File[]) => {
+  const onDrop = useCallback(async (acceptedFiles: File[]) => {
     // Get the first file from the acceptedFiles array
     const file = acceptedFiles[0];
 
@@ -28,6 +28,7 @@ export function UploadDragDrop() {
         formData.append("file", file);
 
         setVideoKey(data.video.fields.key);
+        setUploadStatus("uploading");
 
         // Make the POST request to S3
         return fetch(data.video.url, {
@@ -39,15 +40,16 @@ export function UploadDragDrop() {
         if (!response.ok) {
           throw new Error("Network response was not ok");
         }
-        setUploaded(true);
+        setUploadStatus("finished");
       })
       .catch((error) => {
         console.error("Error:", error);
+        setUploadStatus("idle");
       });
   }, []);
 
-  return uploaded ? (
-    <UploadForm videoKey={videoKey} />
+  return uploadStatus !== "idle" ? (
+    <UploadForm videoKey={videoKey} uploadStatus={uploadStatus} />
   ) : (
     <DragDrop
       onDrop={onDrop}
