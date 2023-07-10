@@ -41,11 +41,6 @@ export function UserAccountNav({ user }: UserAccountNavProps) {
         <DropdownMenuItem asChild>
           <Link href={`/user/${user.id}`}>Your channel</Link>
         </DropdownMenuItem>
-
-        <DropdownMenuItem asChild>
-          <Link href="/r/create">Create Community</Link>
-        </DropdownMenuItem>
-
         <DropdownMenuItem asChild>
           <Link href="/settings">Settings</Link>
         </DropdownMenuItem>
