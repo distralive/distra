@@ -148,8 +148,6 @@ These are hosted instances of distra to try out.
 | Country | Link to instance                      | Cloudflare enabled | Is up? |   |
 |:-------:|---------------------------------------|--------------------|--------|---|
 | 🇺🇸      | https://distra.ihatethedemonkahl.com/ | ✅                  | ✅      |   |
-|         |                                       |                    |        |   |
-|         |                                       |                    |        |   |
 
 ## Contributors
 
