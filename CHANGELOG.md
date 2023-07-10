@@ -2,6 +2,18 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [0.5.1](https://github.com/distralive/distra/compare/v0.5.0...v0.5.1) (2023-07-10)
+
+
+### Features
+
+* add version info in the hamburger menu ([87b0e9b](https://github.com/distralive/distra/commits/87b0e9b1bcb169f1ba11607cbb8e64e10a684296))
+
+
+### Bug Fixes
+
+* **comment-section:** add null checks for comment author ([b01ec7c](https://github.com/distralive/distra/commits/b01ec7ca017ab3dd046867b6d1e6cef24ce4ef58))
+
 ## [0.5.0](https://github.com/distralive/distra/compare/v0.4.3...v0.5.0) (2023-07-10)
 
 
