@@ -104,8 +104,8 @@ export function CommentSection({
               className="rounded-full"
             />
             <div>
-              <p className="text-sm font-semibold">{comment.author.name}</p>
-              <p className="text-sm">{comment.text}</p>
+              <p className="text-sm font-semibold">{comment?.author?.name}</p>
+              <p className="text-sm">{comment?.text}</p>
             </div>
           </div>
         ))}
