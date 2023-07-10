@@ -2,6 +2,14 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [0.5.0](https://github.com/distralive/distra/compare/v0.4.3...v0.5.0) (2023-07-10)
+
+
+### Features
+
+* add a page for listing all the users ([380f751](https://github.com/distralive/distra/commits/380f751b64ff3d1a1e910638600a40f42645d862))
+* **ux:** allow form interaction during uploads ([51b9acc](https://github.com/distralive/distra/commits/51b9acc905e7a03d80573a5aff52e7003eaab7c0))
+
 ### [0.4.3](https://github.com/distralive/distra/compare/v0.4.2...v0.4.3) (2023-07-09)
 
 
