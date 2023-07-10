@@ -4,6 +4,7 @@ import { getServerSession } from "next-auth";
 import { authOptions } from "@/lib/auth";
 import { db } from "@/lib/db";
 import Image from "next/image";
+import packageJson from "@/package.json";
 
 async function getFollowing() {
   const session = await getServerSession(authOptions);
@@ -30,8 +31,8 @@ export async function HamburgerMenu() {
 
   return (
     <div
-      className="w-64 border-r overflow-auto"
-      style={{ height: "calc(100vh - 64px)" }}
+      className="grid grid-rows-menu h-screen w-64 border-r overflow-auto"
+      style={{ gridTemplateRows: "1fr auto", height: "calc(100vh - 64px)" }}
     >
       <div className="flex flex-col w-full">
         <div className="flex flex-col border-b space-y-1.5 p-2">
@@ -76,6 +77,18 @@ export async function HamburgerMenu() {
             </div>
           )}
         </div>
+      </div>
+
+      <div className="border-t p-2 mt-auto">
+        <p className="text-sm text-foreground/70 font-light">
+          distra · v{packageJson.version} ·{" "}
+          <Link
+            href="https://github.com/distralive/distra"
+            className="underline"
+          >
+            View source code
+          </Link>
+        </p>
       </div>
     </div>
   );
