@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [0.6.0](https://github.com/distralive/distra/compare/v0.5.1...v0.6.0) (2023-07-10)
+
+
+### Features
+
+* add settings page ([6d92b8f](https://github.com/distralive/distra/commits/6d92b8f69f67fc407274665b703c5c070292f144))
+
 ### [0.5.1](https://github.com/distralive/distra/compare/v0.5.0...v0.5.1) (2023-07-10)
 
 
