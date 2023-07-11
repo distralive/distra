@@ -13,7 +13,7 @@ export async function Navbar() {
 
   return (
     <div className="sticky top-0 z-10 bg-background border-b border-border py-2 h-16">
-      <div className="container max-w-7xl h-full mx-auto flex items-center justify-between gap-2">
+      <div className="container max-w-7xl h-full mx-auto flex items-center justify-between gap-2 max-sm:hidden">
         <div className="justify-start flex">
           <Link href="/">
             <div className="flex gap-1.5">
@@ -43,6 +43,27 @@ export async function Navbar() {
             </Link>
           )}
           <ModeToggle />
+        </div>
+      </div>
+      <div className="container flex items-center justify-between h-full sm:hidden">
+        <div className="justify-start flex">
+          <Image alt="distra's logo" src={distraLogo} width={24} height={24} />
+        </div>
+        <div className="justify-end flex items-center space-x-1.5">
+          <Link
+            href="/upload"
+            aria-label="Upload a video"
+            className="hover:bg-accent transition-all p-2 rounded-md"
+          >
+            <Plus />
+          </Link>
+          {session?.user ? (
+            <UserAccountNav user={session.user} />
+          ) : (
+            <Link href="/api/auth/signin" className={buttonVariants()}>
+              Sign In
+            </Link>
+          )}
         </div>
       </div>
     </div>

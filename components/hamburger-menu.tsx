@@ -31,7 +31,7 @@ export async function HamburgerMenu() {
 
   return (
     <div
-      className="grid grid-rows-menu h-screen w-64 border-r overflow-auto"
+      className="grid grid-rows-menu h-screen w-64 border-r overflow-auto max-sm:hidden"
       style={{ gridTemplateRows: "1fr auto", height: "calc(100vh - 64px)" }}
     >
       <div className="flex flex-col w-full">
