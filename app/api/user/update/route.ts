@@ -12,10 +12,7 @@ export async function PUT(req: Request) {
   });
 
   try {
-    const rawBody = await req.arrayBuffer();
-    const bodyStr = new TextDecoder("utf-8").decode(rawBody);
-
-    const body = JSON.parse(bodyStr);
+    const body = await req.json();
     const validBody = schema.safeParse(body);
 
     if (session) {
