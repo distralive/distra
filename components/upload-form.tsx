@@ -25,6 +25,7 @@ const formSchema = z.object({
   title: z.string().max(128),
   description: z.string().max(5000).optional(),
   videoKey: z.string().optional(),
+  tags: z.string().optional(),
 });
 
 export function UploadForm({
@@ -83,7 +84,8 @@ export function UploadForm({
       return;
     }
 
-    console.log(values);
+    const tags = values.tags?.split(",");
+
     fetch("/api/video/new", {
       method: "POST",
       body: JSON.stringify({
@@ -91,6 +93,7 @@ export function UploadForm({
         description: values.description,
         thumbnailKey,
         videoKey,
+        tags,
       }),
       headers: {
         "Content-Type": "application/json",
@@ -132,6 +135,22 @@ export function UploadForm({
               <FormControl>
                 <Textarea
                   placeholder="Enter your video's description"
+                  {...field}
+                />
+              </FormControl>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+        <FormField
+          control={form.control}
+          name="tags"
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel>Tags</FormLabel>
+              <FormControl>
+                <Input
+                  placeholder="Enter your video's tags (separate with comma)"
                   {...field}
                 />
               </FormControl>

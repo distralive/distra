@@ -79,6 +79,7 @@ export async function POST(req: Request) {
     description: z.string().max(5000).optional(),
     videoKey: z.string(),
     thumbnailKey: z.string().optional(),
+    tags: z.array(z.string()).optional(),
   });
 
   try {
@@ -87,15 +88,33 @@ export async function POST(req: Request) {
 
     if (session) {
       if (validBody.success) {
-        await db.video.create({
-          data: {
-            title: validBody.data.title,
-            description: validBody.data.description,
-            videoKey: validBody.data.videoKey,
-            thumbnailKey: validBody.data.thumbnailKey,
-            authorId: session.user.id,
-          },
+        let videoData: any = {
+          title: validBody.data.title,
+          description: validBody.data.description,
+          videoKey: validBody.data.videoKey,
+          thumbnailKey: validBody.data.thumbnailKey,
+          authorId: session.user.id,
+        };
+
+        const video = await db.video.create({
+          data: videoData,
         });
+
+        if (validBody.data.tags) {
+          for (const tagName of validBody.data.tags) {
+            let tag = await db.tag.findUnique({ where: { name: tagName } });
+            if (!tag) {
+              tag = await db.tag.create({ data: { name: tagName } });
+            }
+            await db.tagOnVideo.create({
+              data: {
+                videoId: video.id,
+                tagId: tag.id,
+              },
+            });
+          }
+        }
+
         return new Response(JSON.stringify({ success: true }), {
           status: 201,
           headers: { "Content-Type": "application/json" },

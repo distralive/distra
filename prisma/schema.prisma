@@ -2,8 +2,7 @@
 // learn more about it in the docs: https://pris.ly/d/prisma-schema
 
 generator client {
-  provider        = "prisma-client-js"
-  previewFeatures = ["jsonProtocol"]
+  provider = "prisma-client-js"
 }
 
 datasource db {
@@ -96,6 +95,22 @@ model Video {
 
   reactions Reaction[]
   comments  Comment[]
+  tags      TagOnVideo[]
+}
+
+model Tag {
+  id     String       @id @default(cuid())
+  name   String       @unique
+  videos TagOnVideo[]
+}
+
+model TagOnVideo {
+  videoId String
+  tagId   String
+  video   Video  @relation(fields: [videoId], references: [id])
+  tag     Tag    @relation(fields: [tagId], references: [id])
+
+  @@id([videoId, tagId])
 }
 
 model Comment {

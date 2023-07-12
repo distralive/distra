@@ -35,16 +35,66 @@ export async function recommendVideosForUser(userId: string) {
     (reaction) => reaction.videoId
   );
 
-  const recommendedVideoIds = Array.from(
+  const likedAndFollowingLikedVideoIds = Array.from(
     new Set([...likedVideos, ...followingLikedVideoIds])
+  );
+
+  // Fetch tags and titles for these videos
+  const videosWithTagsAndTitles = await db.video.findMany({
+    where: {
+      id: {
+        in: likedAndFollowingLikedVideoIds,
+      },
+    },
+    include: {
+      tags: {
+        select: {
+          tag: {
+            select: {
+              id: true,
+            },
+          },
+        },
+      },
+    },
+  });
+
+  const tagIds = videosWithTagsAndTitles.flatMap((video) =>
+    video.tags.map((tag) => tag.tag.id)
+  );
+
+  const titleWords = videosWithTagsAndTitles.flatMap((video) =>
+    video.title.split(" ")
   );
 
   // Fetch recommended videos
   const recommendedVideos = await db.video.findMany({
     where: {
+      OR: [
+        {
+          tags: {
+            some: {
+              tagId: {
+                in: tagIds,
+              },
+            },
+          },
+        },
+        {
+          OR: titleWords.map((word) => ({
+            title: {
+              contains: word,
+            },
+          })),
+        },
+      ],
+      // Exclude videos the user has already liked
       id: {
-        in: recommendedVideoIds,
+        notIn: likedAndFollowingLikedVideoIds,
       },
+    },
+    include: {
+      tags: true, // Include the associated tags in the response
     },
   });
 
