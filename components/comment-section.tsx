@@ -67,7 +67,7 @@ export function CommentSection({
 
   return (
     <div className="space-y-3">
-      <p className="font-semibold text-lg">Comments</p>
+      <p className="font-semibold text-lg">{comments.length} Comments</p>
       <Form {...form}>
         <form onSubmit={form.handleSubmit(onSubmit)}>
           <div className="flex items-center gap-1.5">
