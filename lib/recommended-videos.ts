@@ -94,6 +94,7 @@ export async function recommendVideosForUser(userId: string) {
       },
     },
     include: {
+      author: true,
       tags: true, // Include the associated tags in the response
     },
   });

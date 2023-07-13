@@ -1,7 +1,7 @@
 import { authOptions } from "@/lib/auth";
 import { recommendVideosForUser } from "@/lib/recommended-videos";
 import { getServerSession } from "next-auth";
-import { VideoCard } from "@/components/video-card";
+import { HomeVideoCard } from "@/components/home-video-card";
 
 export async function RecommendedVideos() {
   const session = await getServerSession(authOptions);
@@ -12,7 +12,7 @@ export async function RecommendedVideos() {
     return (
       <div className="grid grid-rows-4 max-sm:grid-rows-1 max-md:grid-rows-2 gap-4">
         {videos.map((video) => (
-          <VideoCard video={video} key={video.id} />
+          <HomeVideoCard video={video} key={video.id} />
         ))}
       </div>
     );
