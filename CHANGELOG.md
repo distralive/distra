@@ -2,6 +2,25 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [0.7.0](https://github.com/distralive/distra/compare/v0.6.0...v0.7.0) (2023-07-13)
+
+
+### Features
+
+* add a comment counter ([4f2061e](https://github.com/distralive/distra/commits/4f2061eb33abac347961a435182e69685cebcaa4))
+* add bottom nav ([bb72385](https://github.com/distralive/distra/commits/bb72385a26a3220caa2c73898bba6d3b7492dbe9))
+* add global roles and channel verification ([f58a915](https://github.com/distralive/distra/commits/f58a915d7582466557ae9c2b38ded77e9ef9b5c4))
+* add initial video recommendation algorithm ([3d23069](https://github.com/distralive/distra/commits/3d23069fc708ee8e12d62c6971abdab0aaf56128))
+* add tags to videos ([b6b6360](https://github.com/distralive/distra/commits/b6b636088074f0a4c0926ce97ee6bbaa89d6497a))
+* **algorithm:** fetch videos liked by similar users ([b7ecfa6](https://github.com/distralive/distra/commits/b7ecfa667ab6ee4d279c427d6d780432825ebd95))
+* **components:** add home-video-card component ([924b13d](https://github.com/distralive/distra/commits/924b13d60aee37c969146766115ef7c9ea4fabdf))
+* make proper bottom nav ([8a48e2e](https://github.com/distralive/distra/commits/8a48e2e35a5eacb97b302b80f5d359ac2fc25f97))
+
+
+### Bug Fixes
+
+* add a check for session ([b865973](https://github.com/distralive/distra/commits/b865973e5e7cdf0652d1f7e4ea0b8671281ecf6e))
+
 ## [0.6.0](https://github.com/distralive/distra/compare/v0.5.1...v0.6.0) (2023-07-10)
 
 
