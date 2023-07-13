@@ -1,6 +1,10 @@
 import { ReactionType } from "@prisma/client";
 import { db } from "@/lib/db";
 
+function shuffle(array: Array<any>) {
+  array.sort(() => Math.random() - 0.5);
+}
+
 export async function recommendVideosForUser(userId: string) {
   const user = await db.user.findUnique({
     where: { id: userId },
@@ -16,8 +20,8 @@ export async function recommendVideosForUser(userId: string) {
     .filter((reaction) => reaction.type === ReactionType.LIKE)
     .map((reaction) => reaction.videoId);
 
-  // Fetch videos liked by users the current user is following
-  const followingLikedVideos = await db.reaction.findMany({
+  // Fetch videos liked by similar users (the ones current user is following)
+  const similarUsersLikedVideos = await db.reaction.findMany({
     where: {
       type: ReactionType.LIKE,
       user: {
@@ -31,19 +35,19 @@ export async function recommendVideosForUser(userId: string) {
     },
   });
 
-  const followingLikedVideoIds = followingLikedVideos.map(
+  const similarUsersLikedVideoIds = similarUsersLikedVideos.map(
     (reaction) => reaction.videoId
   );
 
-  const likedAndFollowingLikedVideoIds = Array.from(
-    new Set([...likedVideos, ...followingLikedVideoIds])
+  const likedAndSimilarUsersLikedVideoIds = Array.from(
+    new Set([...likedVideos, ...similarUsersLikedVideoIds])
   );
 
   // Fetch tags and titles for these videos
   const videosWithTagsAndTitles = await db.video.findMany({
     where: {
       id: {
-        in: likedAndFollowingLikedVideoIds,
+        in: likedAndSimilarUsersLikedVideoIds,
       },
     },
     include: {
@@ -90,14 +94,19 @@ export async function recommendVideosForUser(userId: string) {
       ],
       // Exclude videos the user has already liked
       id: {
-        notIn: likedAndFollowingLikedVideoIds,
+        notIn: likedAndSimilarUsersLikedVideoIds,
       },
     },
     include: {
       author: true,
       tags: true, // Include the associated tags in the response
     },
+    orderBy: {
+      createdAt: "desc", // Prioritize newer videos
+    },
   });
+
+  shuffle(recommendedVideos);
 
   return recommendedVideos;
 }
