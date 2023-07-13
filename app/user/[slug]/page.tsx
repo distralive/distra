@@ -25,15 +25,15 @@ export default async function User({ params }: { params: { slug: string } }) {
   const data = await getUser(params.slug);
 
   return data ? (
-    <div className="flex">
+    <div className="flex overflow-hidden">
       <div className="flex-shrink-0">
         <HamburgerMenu />
       </div>
-      <div className="flex flex-col w-full">
+      <div className="grid grid-cols-1 auto-rows-auto w-full max-h-[calc(100vh-64px)]">
         <ChannelCard id={params.slug} data={data} />
-        <div className="flex flex-col p-3 px-12">
+        <div className="p-3 px-12 overflow-y-auto">
           <p className="text-xl mb-1.5 font-semibold">Videos</p>
-          <div className="flex space-x-1.5">
+          <div className="grid grid-cols-3 max-sm:grid-cols-1 max-md:grid-cols-2 gap-3">
             {data.videos.map((video) => (
               <VideoCard key={video.id} video={video} />
             ))}
