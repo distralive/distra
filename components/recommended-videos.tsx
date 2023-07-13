@@ -9,6 +9,12 @@ export async function RecommendedVideos() {
   if (session) {
     const videos = await recommendVideosForUser(session?.user.id);
 
-    return videos.map((video) => <VideoCard video={video} key={video.id} />);
+    return (
+      <div className="grid grid-rows-4 max-sm:grid-rows-1 max-md:grid-rows-2 gap-4">
+        {videos.map((video) => (
+          <VideoCard video={video} key={video.id} />
+        ))}
+      </div>
+    );
   }
 }

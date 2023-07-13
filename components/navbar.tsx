@@ -12,7 +12,7 @@ export async function Navbar() {
   const session = await getServerSession(authOptions);
 
   return (
-    <div className="sticky top-0 z-10 bg-background border-b border-border py-2 h-16">
+    <div className="sticky top-0 z-10 bg-background sm:border-b max-sm:bg-gradient-to-b max-sm:from-slate-900 border-border py-2 h-16">
       <div className="container max-w-7xl h-full mx-auto flex items-center justify-between gap-2 max-sm:hidden">
         <div className="justify-start flex">
           <Link href="/">
