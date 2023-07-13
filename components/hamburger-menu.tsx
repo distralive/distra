@@ -9,21 +9,25 @@ import packageJson from "@/package.json";
 async function getFollowing() {
   const session = await getServerSession(authOptions);
 
-  const following = await db.user.findUnique({
-    where: {
-      id: session?.user.id,
-    },
-    select: {
-      id: true,
-      following: {
-        select: {
-          followed: true,
+  if (session) {
+    const following = await db.user.findUnique({
+      where: {
+        id: session?.user.id,
+      },
+      select: {
+        id: true,
+        following: {
+          select: {
+            followed: true,
+          },
         },
       },
-    },
-  });
+    });
 
-  return following;
+    return following;
+  } else {
+    return null;
+  }
 }
 
 export async function HamburgerMenu() {
