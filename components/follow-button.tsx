@@ -63,7 +63,11 @@ export function FollowButton({
   };
 
   if (session?.user?.id === userId) {
-    return <Button disabled>Follow</Button>;
+    return (
+      <div title="You can't follow yourself">
+        <Button disabled>Follow</Button>
+      </div>
+    );
   } else {
     return (
       <Button onClick={handleFollow} disabled={isLoading}>
