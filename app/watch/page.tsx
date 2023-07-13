@@ -92,36 +92,38 @@ export default async function Watch({
 
   return v ? (
     <div className="p-6 flex flex-col space-y-3">
-      <VideoPlayer videoSource={url} mimeType={mimeType as string} />
-      <p className="font-semibold text-xl">{metadata?.title}</p>
-      <div className="flex items-center justify-between">
-        <div className="flex justify-start">
-          <Link href={`/user/${metadata?.author.id}`}>
-            <div className="flex space-x-2">
-              <Image
-                alt="Frolleks' profile picture"
-                src={metadata?.author?.image ?? ""}
-                width={48}
-                height={48}
-                className="rounded-full"
-              />
-              <div className="flex flex-col justify-start">
-                <p className="font-semibold">{metadata?.author?.name}</p>
-                <p className="text-sm text-foreground/80">
-                  {metadata?.author.followers.length} followers
-                </p>
+      <div className="space-y-3 pb-3 border-b">
+        <VideoPlayer videoSource={url} mimeType={mimeType as string} />
+        <p className="font-semibold text-xl">{metadata?.title}</p>
+        <div className="flex items-center justify-between">
+          <div className="flex justify-start">
+            <Link href={`/user/${metadata?.author.id}`}>
+              <div className="flex space-x-2">
+                <Image
+                  alt="Frolleks' profile picture"
+                  src={metadata?.author?.image ?? ""}
+                  width={48}
+                  height={48}
+                  className="rounded-full"
+                />
+                <div className="flex flex-col justify-start">
+                  <p className="font-semibold">{metadata?.author?.name}</p>
+                  <p className="text-sm text-foreground/80">
+                    {metadata?.author.followers.length} followers
+                  </p>
+                </div>
               </div>
+            </Link>
+            <div className="ml-6">
+              <FollowButton
+                userId={metadata?.authorId as string}
+                session={session}
+              />
             </div>
-          </Link>
-          <div className="ml-6">
-            <FollowButton
-              userId={metadata?.authorId as string}
-              session={session}
-            />
           </div>
-        </div>
-        <div className="flex justify-end">
-          <VideoReactionButtons videoId={v as string} />
+          <div className="flex justify-end">
+            <VideoReactionButtons videoId={v as string} />
+          </div>
         </div>
       </div>
       <CommentSection session={session} video={metadata} />
