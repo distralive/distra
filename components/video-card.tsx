@@ -21,13 +21,14 @@ export async function VideoCard({ video }: { key: string; video: any }) {
     return (
       <div className="space-y-1.5">
         <Link href={`/watch?v=${video.id}`}>
-          <Image
-            alt={video.title}
-            src={url ?? ""}
-            width={320}
-            height={180}
-            className="rounded-md"
-          />
+          <div className="aspect-video relative">
+            <Image
+              alt={video.title}
+              src={url ?? ""}
+              fill
+              className="rounded-md object-cover"
+            />
+          </div>
         </Link>
 
         <div className="flex justify-between">
