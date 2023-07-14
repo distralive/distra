@@ -1,6 +1,7 @@
 import { authOptions } from "@/lib/auth";
 import { db } from "@/lib/db";
 import { s3Client } from "@/lib/s3";
+import { CopyObjectCommand, DeleteObjectCommand } from "@aws-sdk/client-s3";
 import {
   createPresignedPost,
   type PresignedPostOptions,
@@ -77,10 +78,42 @@ export async function POST(req: Request) {
   const schema = z.object({
     title: z.string().max(128),
     description: z.string().max(5000).optional(),
+    videoVisibility: z.enum(["PUBLIC", "UNLISTED", "PRIVATE"]).optional(),
     videoKey: z.string(),
     thumbnailKey: z.string().optional(),
     tags: z.array(z.string()).optional(),
   });
+
+  async function moveS3Object(
+    srcBucket: string,
+    destBucket: string,
+    objectKey: string
+  ) {
+    try {
+      // Copy the object
+      await s3Client.send(
+        new CopyObjectCommand({
+          Bucket: destBucket,
+          CopySource: encodeURIComponent(srcBucket + "/" + objectKey),
+          Key: objectKey,
+        })
+      );
+
+      console.log(`Successfully copied '${objectKey}' to '${destBucket}'.`);
+
+      // Delete the object from source bucket
+      await s3Client.send(
+        new DeleteObjectCommand({
+          Bucket: srcBucket,
+          Key: objectKey,
+        })
+      );
+
+      console.log(`Successfully deleted '${objectKey}' from '${srcBucket}'.`);
+    } catch (err) {
+      console.error(err);
+    }
+  }
 
   try {
     const body = await req.json();
@@ -91,6 +124,7 @@ export async function POST(req: Request) {
         let videoData: any = {
           title: validBody.data.title,
           description: validBody.data.description,
+          videoVisibility: validBody.data.videoVisibility,
           videoKey: validBody.data.videoKey,
           thumbnailKey: validBody.data.thumbnailKey,
           authorId: session.user.id,
@@ -113,6 +147,14 @@ export async function POST(req: Request) {
               },
             });
           }
+        }
+
+        if (video.videoVisibility === "PRIVATE") {
+          await moveS3Object(
+            "distra-videos",
+            "distra-private-videos",
+            video.videoKey
+          );
         }
 
         return new Response(JSON.stringify({ success: true }), {

@@ -24,7 +24,7 @@ import { DragDrop } from "@/components/drag-drop";
 const formSchema = z.object({
   title: z.string().max(128),
   description: z.string().max(5000).optional(),
-  videoKey: z.string().optional(),
+  videoVisibility: z.enum(["PUBLIC", "UNLISTED", "PRIVATE"]).default("PUBLIC"),
   tags: z.string().optional(),
 });
 
@@ -74,6 +74,8 @@ export function UploadForm({
     defaultValues: {
       title: "",
       description: "",
+      videoVisibility: "PUBLIC",
+      tags: undefined,
     },
   });
 
@@ -91,6 +93,7 @@ export function UploadForm({
       body: JSON.stringify({
         title: values.title,
         description: values.description,
+        videoVisibility: values.videoVisibility.toUpperCase(),
         thumbnailKey,
         videoKey,
         tags,
@@ -135,6 +138,22 @@ export function UploadForm({
               <FormControl>
                 <Textarea
                   placeholder="Enter your video's description"
+                  {...field}
+                />
+              </FormControl>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+        <FormField
+          control={form.control}
+          name="videoVisibility"
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel>Video Visibility</FormLabel>
+              <FormControl>
+                <Input
+                  placeholder="Enter the type of visibility of your video (e.g. public)"
                   {...field}
                 />
               </FormControl>

@@ -18,7 +18,10 @@ export async function VideoCard({ video }: { key: string; video: any }) {
     });
 
     const url = await getSignedUrl(s3Client, command, { expiresIn: 86400 });
-    return (
+    return video.videoVisibility === "PRIVATE" &&
+      video.authorId !== session?.user?.id ? (
+      <></>
+    ) : (
       <div className="space-y-1.5">
         <Link href={`/watch?v=${video.id}`}>
           <div className="aspect-video relative">
