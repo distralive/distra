@@ -8,15 +8,17 @@ import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 
-import { Home, Menu, Search } from "lucide-react";
+import { Menu, Search } from "lucide-react";
 import { twMerge } from "tailwind-merge";
 import { ModeToggle } from "./mode-toggle";
+import { UserAccountNav } from "./user-account-nav";
 
 interface HeaderProps {
+  session: any;
   className?: string;
 }
 
-export const Header: React.FC<HeaderProps> = ({ className }) => {
+export const Header: React.FC<HeaderProps> = ({ session, className }) => {
   const router = useRouter();
 
   return (
@@ -57,9 +59,13 @@ export const Header: React.FC<HeaderProps> = ({ className }) => {
         </div>
         <div className="flex items-center gap-x-1.5">
           <ModeToggle />
-          <Link href="/sign-in">
-            <Button>Log in</Button>
-          </Link>
+          {session?.user ? (
+            <UserAccountNav user={session.user} />
+          ) : (
+            <Link href="/sign-in">
+              <Button>Log in</Button>
+            </Link>
+          )}
         </div>
       </div>
     </div>
