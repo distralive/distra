@@ -6,7 +6,9 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "next lint"
+    "lint": "next lint",
+    "postinstall": "prisma generate",
+    "db:push": "prisma db push"
   },
   "dependencies": {
     "@radix-ui/react-dropdown-menu": "^2.0.5",
@@ -23,6 +25,7 @@
     "next": "13.4.10",
     "next-themes": "^0.2.1",
     "postcss": "8.4.26",
+    "prisma": "^5.0.0",
     "react": "18.2.0",
     "react-dom": "18.2.0",
     "tailwind-merge": "^1.14.0",
