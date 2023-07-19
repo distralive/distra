@@ -13,11 +13,10 @@ import { twMerge } from "tailwind-merge";
 import { ModeToggle } from "./mode-toggle";
 
 interface HeaderProps {
-  children: React.ReactNode;
   className?: string;
 }
 
-export const Header: React.FC<HeaderProps> = ({ children, className }) => {
+export const Header: React.FC<HeaderProps> = ({ className }) => {
   const router = useRouter();
 
   return (
@@ -58,10 +57,11 @@ export const Header: React.FC<HeaderProps> = ({ children, className }) => {
         </div>
         <div className="flex items-center gap-x-1.5">
           <ModeToggle />
-          <Button>Log in</Button>
+          <Link href="/sign-in">
+            <Button>Log in</Button>
+          </Link>
         </div>
       </div>
-      {children}
     </div>
   );
 };
