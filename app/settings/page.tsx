@@ -1,7 +1,17 @@
 import { ProfileForm } from "@/components/profile-form";
 import { Separator } from "@/components/ui/separator";
+import { authOptions } from "@/lib/auth";
+import { db } from "@/lib/db";
+import { getServerSession } from "next-auth";
 
-export default function SettingsProfilePage() {
+export default async function SettingsProfilePage() {
+  const session = await getServerSession(authOptions);
+  const user = await db.user.findUnique({
+    where: {
+      id: session?.user.id,
+    },
+  });
+
   return (
     <div className="space-y-6">
       <div>
@@ -11,7 +21,7 @@ export default function SettingsProfilePage() {
         </p>
       </div>
       <Separator />
-      <ProfileForm />
+      <ProfileForm user={user} />
     </div>
   );
 }
