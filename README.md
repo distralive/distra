@@ -1,6 +1,9 @@
 # distra
+
 <!-- ALL-CONTRIBUTORS-BADGE:START - Do not remove or modify this section -->
+
 [![All Contributors](https://img.shields.io/badge/all_contributors-1-orange.svg?style=flat-square)](#contributors-)
+
 <!-- ALL-CONTRIBUTORS-BADGE:END -->
 
 distra is a free and open source video sharing platform that prioritizes free access and cutting-edge technology to provide a unique and user-friendly experience for sharing, viewing, and interacting with video content.
@@ -13,7 +16,7 @@ You'll need the following to run your own distra instance:
 
 - Node.js 18.x (LTS)
 - pnpm (as the package manager)
-- A running MySQL database (you can use Docker to run one)
+- A running PostgreSQL database (you can use Docker to run one)
 - A running MinIO instance (you can use Docker to run one)
 
 ### Clone the repository
@@ -36,24 +39,24 @@ cp .env.example .env
 
 ### Initializing the database
 
-If you haven't setup a MySQL instance, set it up on your local machine directly, or with [Docker](https://www.docker.com/).
+If you haven't setup a PostgreSQL instance, set it up on your local machine directly, or with [Docker](https://www.docker.com/).
 
 **Setting up with Docker (recommended)**
 
-1. Pull the [mysql](https://hub.docker.com/_/mysql) image.
+1. Pull the [postgres](https://hub.docker.com/_/postgres) image.
 
 ```
-docker pull mysql
+docker pull postgres
 ```
 
 2. Run an instance.
 
 ```
-docker run --name distra-db -e MYSQL_ROOT_PASSWORD=my-secret-pw -p 3306:3306 -p 33060:33060 -d mysql
+docker run --name distra-db -e POSTGRES_PASSWORD=my-secret-pw -p 5432:5432 -d postgres
 ```
 
 3. Add a `DATABASE_URL` environment variable.
-The value of the variable should be something like `mysql://root:my-secret-pw@localhost:3306/db?schema=public`
+   The value of the variable should be something like `mysql://postgres:my-secret-pw@localhost:5432/postgres`
 
 4. Migrate the schema to the database.
 
@@ -94,7 +97,7 @@ And then, you set an S3 policy for the `distra-videos` bucket:
     "Version": "2012-10-17",
     "Statement": [
         {
-            "Effect": "Allow", 
+            "Effect": "Allow",
             // Start of the policy
             "Principal": {
                 "AWS": [
@@ -135,19 +138,19 @@ pnpm start
 If you'd choose to deploy your own instance somewhere, we would recommend these:
 
 - [Vercel](https://vercel.com) for running the Next.js app
-- [PlanetScale](https://planetscale.com) for running the database, based on MySQL
+- [Neon](https://neon.tech) for running the database, based on PostgreSQL
 - [Amazon S3](https://aws.amazon.com/s3/) for running the object storage, which hosts the videos and thumbnails
-  - *[Cloudflare R2](https://www.cloudflare.com/products/r2/) may work, but since this app uses presigned POST urls for uploads, which isn't supported by it, we wouldn't recommend this*
+  - _[Cloudflare R2](https://www.cloudflare.com/products/r2/) may work, but since this app uses presigned POST urls for uploads, which isn't supported by it, we wouldn't recommend this_
 
-*note: We are not sponsored/endorsed by any of these sites.*
+_note: We are not sponsored/endorsed by any of these sites._
 
 ## Hosted instances
 
 These are hosted instances of distra to try out.
 
 | Country | Link to instance                      | Cloudflare enabled | Is up? |
-|:-------:|---------------------------------------|--------------------|--------|
-| 🇺🇸      | https://distra.ihatethedemonkahl.com/ | ✅                  | ✅      |
+| :-----: | ------------------------------------- | ------------------ | ------ |
+|   🇺🇸    | https://distra.ihatethedemonkahl.com/ | ✅                 | ❌     |
 
 ## Contributors
 
