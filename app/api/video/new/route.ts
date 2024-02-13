@@ -10,66 +10,79 @@ import { getServerSession } from "next-auth";
 import { z } from "zod";
 
 export async function GET(req: Request) {
-  const session = await getServerSession(authOptions);
-
+  let session;
   try {
-    if (session) {
-      const videoKey = `${session.user.id}-${Date.now()}-video`;
-      const videoParams: PresignedPostOptions = {
-        Bucket: "distra-videos",
-        Key: videoKey,
-        Expires: 7200,
-        Conditions: [
-          ["starts-with", "$Content-Type", "video/"], // Only allow video content types
-        ],
-      };
-
-      const thumbnailKey = `${session.user.id}-${Date.now()}-thumbnail`;
-      const thumbnailParams: PresignedPostOptions = {
-        Bucket: "distra-thumbnails",
-        Key: thumbnailKey,
-        Expires: 600,
-        Conditions: [
-          ["starts-with", "$Content-Type", "image/"], // Only allow image content types
-        ],
-      };
-
-      const videoPresignedUrl = await createPresignedPost(
-        s3Client,
-        videoParams
-      );
-      const thumbnailPresignedUrl = await createPresignedPost(
-        s3Client,
-        thumbnailParams
-      );
-
-      return new Response(
-        JSON.stringify({
-          video: videoPresignedUrl,
-          thumbnail: thumbnailPresignedUrl,
-        }),
-        {
-          status: 200,
-          headers: { "Content-Type": "application/json" },
-        }
-      );
-    } else {
-      return new Response(
-        JSON.stringify({
-          error: "You have to be logged in to upload videos.",
-        }),
-        {
-          status: 401,
-          headers: { "Content-Type": "application/json" },
-        }
-      );
-    }
+    session = await getServerSession(authOptions);
   } catch (error) {
-    return new Response(JSON.stringify({ error }), {
-      status: 500,
-      headers: { "Content-Type": "application/json" },
-    });
+    return new Response(
+      // @ts-ignore
+      JSON.stringify({ error: "Error fetching session: " + error.message }),
+      {
+        status: 500,
+        headers: { "Content-Type": "application/json" },
+      }
+    );
   }
+
+  if (!session) {
+    return new Response(
+      JSON.stringify({
+        error: "You have to be logged in to upload videos.",
+      }),
+      {
+        status: 401,
+        headers: { "Content-Type": "application/json" },
+      }
+    );
+  }
+
+  const videoKey = `${session.user.id}-${Date.now()}-video`;
+  const thumbnailKey = `${session.user.id}-${Date.now()}-thumbnail`;
+
+  const videoParams: PresignedPostOptions = {
+    Bucket: "distra-videos",
+    Key: videoKey,
+    Expires: 7200,
+    Conditions: [["starts-with", "$Content-Type", "video/"]],
+  };
+
+  const thumbnailParams: PresignedPostOptions = {
+    Bucket: "distra-thumbnails",
+    Key: thumbnailKey,
+    Expires: 600,
+    Conditions: [["starts-with", "$Content-Type", "image/"]],
+  };
+
+  let videoPresignedUrl, thumbnailPresignedUrl;
+  try {
+    videoPresignedUrl = await createPresignedPost(s3Client, videoParams);
+    thumbnailPresignedUrl = await createPresignedPost(
+      s3Client,
+      thumbnailParams
+    );
+  } catch (error) {
+    return new Response(
+      JSON.stringify({
+        // @ts-ignore
+        error: "Error creating presigned URLs: " + error.message,
+      }),
+      {
+        status: 500,
+        headers: { "Content-Type": "application/json" },
+      }
+    );
+  }
+
+  return new Response(
+    JSON.stringify({
+      video: videoPresignedUrl,
+      thumbnail: thumbnailPresignedUrl,
+    }),
+    {
+      status: 200,
+      headers: { "Content-Type": "application/json" },
+    }
+  );
 }
 
 export async function POST(req: Request) {
