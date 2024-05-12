@@ -14,7 +14,7 @@ distra is a free and open source video sharing platform that prioritizes free ac
 
 You'll need the following to run your own distra instance:
 
-- Node.js 18.x (LTS)
+- Node.js 18.x or later
 - pnpm (as the package manager)
 - A running PostgreSQL database (you can use Docker to run one)
 - A running MinIO instance (you can use Docker to run one)
