@@ -56,7 +56,7 @@ docker run --name distra-db -e POSTGRES_PASSWORD=my-secret-pw -p 5432:5432 -d po
 ```
 
 3. Add a `DATABASE_URL` environment variable.
-   The value of the variable should be something like `mysql://postgres:my-secret-pw@localhost:5432/postgres`
+   The value of the variable should be something like `postgres://postgres:my-secret-pw@localhost:5432/postgres`
 
 4. Migrate the schema to the database.
 
