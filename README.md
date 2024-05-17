@@ -146,28 +146,3 @@ These are hosted instances of distra to try out.
 | Country | Link to instance                      | Cloudflare enabled | Is up? |
 | :-----: | ------------------------------------- | ------------------ | ------ |
 |   🇺🇸    | https://distra.ihatethedemonkahl.com/ | ✅                 | ❌     |
-
-## Contributors
-
-<!-- ALL-CONTRIBUTORS-LIST:START - Do not remove or modify this section -->
-<!-- prettier-ignore-start -->
-<!-- markdownlint-disable -->
-<table>
-  <tbody>
-    <tr>
-      <td align="center" valign="top" width="14.28%"><a href="https://github.com/frolleks"><img src="https://avatars.githubusercontent.com/u/83149723?v=4?s=100" width="100px;" alt="Frolleks"/><br /><sub><b>Frolleks</b></sub></a><br /><a href="https://github.com/distralive/distra/commits?author=frolleks" title="Code">💻</a> <a href="#maintenance-frolleks" title="Maintenance">🚧</a> <a href="#ideas-frolleks" title="Ideas, Planning, & Feedback">🤔</a></td>
-    </tr>
-  </tbody>
-</table>
-
-<!-- markdownlint-restore -->
-<!-- prettier-ignore-end -->
-
-<!-- ALL-CONTRIBUTORS-LIST:END -->
-<!-- prettier-ignore-start -->
-<!-- markdownlint-disable -->
-
-<!-- markdownlint-restore -->
-<!-- prettier-ignore-end -->
-
-<!-- ALL-CONTRIBUTORS-LIST:END -->
