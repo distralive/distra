@@ -19,7 +19,21 @@ export async function GET(
       title: true,
       description: true,
       authorId: true,
-      comments: true,
+      comments: {
+        where: {
+          videoId: id,
+        },
+        select: {
+          id: true,
+          text: true,
+          author: true,
+          createdAt: true,
+          commentId: true,
+          replies: true,
+          replyToId: true,
+          votes: true,
+        },
+      },
       createdAt: true,
       reactions: true,
       thumbnailKey: true,

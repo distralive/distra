@@ -27,14 +27,7 @@ async function getMimeType(bucket: string, key: string) {
   }
 }
 
-export default async function Watch({
-  searchParams,
-}: {
-  searchParams: { [key: string]: string | string[] | undefined };
-}) {
-  const { v } = searchParams;
-  const session = await getServerSession(authOptions);
-
+async function getMetadata(v: any) {
   const metadata = await db.video.findUnique({
     where: {
       id: v as string,
@@ -74,6 +67,18 @@ export default async function Watch({
       videoVisibility: true,
     },
   });
+
+  return metadata;
+}
+
+export default async function Watch({
+  searchParams,
+}: {
+  searchParams: { [key: string]: string | string[] | undefined };
+}) {
+  const { v } = searchParams;
+  const metadata = await getMetadata(v);
+  const session = await getServerSession(authOptions);
 
   const command = new GetObjectCommand({
     Bucket: "distra-private-videos",

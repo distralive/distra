@@ -25,6 +25,14 @@ const formSchema = z.object({
   content: z.string().min(1),
 });
 
+async function fetchVideoMetadata(videoId: string) {
+  const response = await fetch(`/api/video/${videoId}`);
+  if (!response.ok) {
+    throw new Error("Failed to fetch video metadata");
+  }
+  return await response.json();
+}
+
 export function CommentSection({
   session,
   video,
@@ -58,9 +66,9 @@ export function CommentSection({
       },
     }).then(async (res) => {
       if (res.ok) {
-        // Refresh comments when a new comment is posted
-        const newComment = await res.json();
-        setComments((prevComments: any) => [...prevComments, newComment]);
+        const updatedVideo = await fetchVideoMetadata(video.id);
+        console.log(updatedVideo.comments);
+        setComments(updatedVideo.comments);
       }
     });
   }
