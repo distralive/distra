@@ -32,7 +32,7 @@ async function getFollowing() {
 
 export async function HamburgerMenu() {
   const following = await getFollowing();
-  const session = await getServerSession();
+  const session = await getServerSession(authOptions);
 
   return (
     <div
@@ -48,7 +48,7 @@ export async function HamburgerMenu() {
             </div>
           </Link>
         </div>
-        <FollowingSection session={session} following={following} />
+        <FollowingSection session={session} following={following?.following} />
       </div>
 
       <div className="border-t p-2 mt-auto">

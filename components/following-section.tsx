@@ -12,7 +12,7 @@ export function FollowingSection({
     <div className="flex flex-col border-b space-y-1.5 p-4">
       <p className="font-semibold">Following</p>
       {session ? (
-        (following?.following.length as number) > 0 ? (
+        (following.length as number) > 0 ? (
           <FollowingList following={following} />
         ) : (
           <div>
