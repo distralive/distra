@@ -94,20 +94,15 @@ And then, you set an S3 policy for the `distra-videos` bucket:
 
 ```json
 {
-    "Version": "2012-10-17",
-    "Statement": [
-        {
-            "Effect": "Allow",
-            // Start of the policy
-            "Principal": {
-                "AWS": [
-                    "*"
-                ]
-            },
-            // End of the policy
-            ...
-        }
-    ]
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Effect": "Allow",
+      "Principal": "*",
+      "Action": "s3:GetObject",
+      "Resource": "arn:aws:s3:::distra-videos/*"
+    }
+  ]
 }
 ```
 
