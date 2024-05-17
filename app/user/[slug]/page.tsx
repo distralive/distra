@@ -29,7 +29,7 @@ export default async function User({ params }: { params: { slug: string } }) {
       <div className="flex-shrink-0">
         <HamburgerMenu />
       </div>
-      <div className="grid grid-cols-1 auto-rows-auto w-full max-h-[calc(100vh-64px)]">
+      <div className="flex flex-col w-full max-h-[calc(100vh-64px)]">
         <ChannelCard id={params.slug} data={data} />
         <div className="p-3 px-12 overflow-y-auto">
           <p className="text-xl mb-1.5 font-semibold">Videos</p>
