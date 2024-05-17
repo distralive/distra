@@ -2,6 +2,20 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [0.7.1](https://github.com/distralive/distra/compare/v0.7.0...v0.7.1) (2024-05-17)
+
+
+### Features
+
+* add implementation of video visibility ([df4425c](https://github.com/distralive/distra/commits/df4425ce7efc747bdb3a3b561b18109b57286511))
+* use vidstack video player instead of plyr ([9c1d7b9](https://github.com/distralive/distra/commits/9c1d7b9939ac5c5718fb3b8bbb9364c12ed450bd))
+
+
+### Bug Fixes
+
+* add better handling for the new video api endpoint ([0d9a62d](https://github.com/distralive/distra/commits/0d9a62d00a8a14eabb327c91baa95a6d02d0f73a))
+* add parameter to getServerSession ([9a34c5c](https://github.com/distralive/distra/commits/9a34c5c06eafe8c066cd2ed0cb1dc26ae01f5fd0))
+
 ## [0.7.0](https://github.com/distralive/distra/compare/v0.6.0...v0.7.0) (2023-07-13)
 
 
