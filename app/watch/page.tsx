@@ -1,14 +1,12 @@
 import { CommentSection } from "@/components/comment-section";
 import { FollowButton } from "@/components/follow-button";
-import { Button } from "@/components/ui/button";
 import { VideoPlayer } from "@/components/video-player";
 import { VideoReactionButtons } from "@/components/video-reaction-buttons";
-import { env } from "@/env.mjs";
 import { authOptions } from "@/lib/auth";
 import { db } from "@/lib/db";
 import { s3Client } from "@/lib/s3";
-import { GetObjectCommand, HeadObjectCommand } from "@aws-sdk/client-s3";
-import { getSignedUrl } from "@aws-sdk/s3-request-presigner";
+import { HeadObjectCommand } from "@aws-sdk/client-s3";
+import { VideoMimeType } from "@vidstack/react";
 import { getServerSession } from "next-auth";
 import Image from "next/image";
 import Link from "next/link";
@@ -80,16 +78,11 @@ export default async function Watch({
   const metadata = await getMetadata(v);
   const session = await getServerSession(authOptions);
 
-  const command = new GetObjectCommand({
-    Bucket: "distra-private-videos",
-    Key: metadata?.videoKey,
-  });
-
   const url =
     metadata?.videoVisibility === "PUBLIC" ||
     metadata?.videoVisibility === "UNLISTED"
-      ? `${env.S3_ENDPOINT}/distra-videos/${metadata?.videoKey}`
-      : await getSignedUrl(s3Client, command);
+      ? `/cdn/video/${metadata?.videoKey}`
+      : `/cdn/private-video/${metadata?.videoKey}`;
 
   let mimeType = await getMimeType("distra-videos", metadata?.videoKey ?? "");
 
@@ -98,7 +91,7 @@ export default async function Watch({
   return v ? (
     <div className="p-6 flex flex-col space-y-3">
       <div className="space-y-3 pb-3 border-b">
-        <VideoPlayer videoSource={url} mimeType={mimeType as string} />
+        <VideoPlayer videoSource={url} mimeType={mimeType as VideoMimeType} />
         <p className="font-semibold text-xl">{metadata?.title}</p>
         <div className="flex items-center justify-between">
           <div className="flex justify-start">

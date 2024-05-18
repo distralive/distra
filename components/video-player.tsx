@@ -1,6 +1,6 @@
 "use client";
 
-import { MediaPlayer, MediaProvider } from "@vidstack/react";
+import { MediaPlayer, MediaProvider, VideoMimeType } from "@vidstack/react";
 import {
   PlyrLayout,
   plyrLayoutIcons,
@@ -14,10 +14,13 @@ export function VideoPlayer({
   mimeType,
 }: {
   videoSource: string;
-  mimeType: string;
+  mimeType: VideoMimeType;
 }) {
   return (
-    <MediaPlayer src={videoSource} className="aspect-video flex">
+    <MediaPlayer
+      src={{ src: videoSource, type: mimeType }}
+      className="aspect-video flex"
+    >
       <MediaProvider />
       <PlyrLayout icons={plyrLayoutIcons} />
     </MediaPlayer>

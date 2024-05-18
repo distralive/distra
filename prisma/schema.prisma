@@ -85,7 +85,7 @@ model Video {
   title           String
   description     String?
   thumbnailKey    String?
-  videoKey        String
+  videoKey        String              @unique
   videoVisibility VideoVisibilityType @default(PUBLIC)
   createdAt       DateTime            @default(now())
   updatedAt       DateTime            @updatedAt
