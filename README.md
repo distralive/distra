@@ -89,22 +89,7 @@ By default MinIO's endpoint is `http://localhost:9000`.
 
 Then, you open up `http://localhost:9000` or whatever your MinIO endpoint is on the browser.
 Then, you sign into it with the access key and the secret key.
-Then, you create 3 buckets that are called `distra-videos`, `distra-private-videos`, and `distra-thumbnails` respectively.
-And then, you set an S3 policy for the `distra-videos` bucket:
-
-```json
-{
-  "Version": "2012-10-17",
-  "Statement": [
-    {
-      "Effect": "Allow",
-      "Principal": "*",
-      "Action": "s3:GetObject",
-      "Resource": "arn:aws:s3:::distra-videos/*"
-    }
-  ]
-}
-```
+And then, you create 3 buckets that are called `distra-videos`, `distra-private-videos`, and `distra-thumbnails` respectively.
 
 ### Run a development server
 
