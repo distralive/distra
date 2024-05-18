@@ -1,11 +1,5 @@
 # distra
 
-<!-- ALL-CONTRIBUTORS-BADGE:START - Do not remove or modify this section -->
-
-[![All Contributors](https://img.shields.io/badge/all_contributors-1-orange.svg?style=flat-square)](#contributors-)
-
-<!-- ALL-CONTRIBUTORS-BADGE:END -->
-
 distra is a free and open source video sharing platform that prioritizes free access and cutting-edge technology to provide a unique and user-friendly experience for sharing, viewing, and interacting with video content.
 
 ## Local development or self-hosting
