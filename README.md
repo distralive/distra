@@ -115,6 +115,7 @@ If you'd choose to deploy your own instance somewhere, we would recommend these:
 - [Neon](https://neon.tech) for running the database, based on PostgreSQL
 - [Amazon S3](https://aws.amazon.com/s3/) for running the object storage, which hosts the videos and thumbnails
   - _[Cloudflare R2](https://www.cloudflare.com/products/r2/) may work, but since this app uses presigned POST urls for uploads, which isn't supported by it, we wouldn't recommend this_
+- Or just deploy it on a VPS provider you like and run everything on it. Guide is provided above.
 
 _note: We are not sponsored/endorsed by any of these sites._
 
