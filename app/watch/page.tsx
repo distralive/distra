@@ -69,11 +69,12 @@ async function getMetadata(v: any) {
   return metadata;
 }
 
-export default async function Watch({
-  searchParams,
-}: {
-  searchParams: { [key: string]: string | string[] | undefined };
-}) {
+export default async function Watch(
+  props: {
+    searchParams: Promise<{ [key: string]: string | string[] | undefined }>;
+  }
+) {
+  const searchParams = await props.searchParams;
   const { v } = searchParams;
   const metadata = await getMetadata(v);
   const session = await getServerSession(authOptions);

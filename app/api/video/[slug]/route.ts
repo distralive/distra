@@ -4,10 +4,8 @@ import { s3Client } from "@/lib/s3";
 import { DeleteObjectCommand } from "@aws-sdk/client-s3";
 import { getServerSession } from "next-auth";
 
-export async function GET(
-  req: Request,
-  { params }: { params: { slug: string } }
-) {
+export async function GET(req: Request, props: { params: Promise<{ slug: string }> }) {
+  const params = await props.params;
   const id = params.slug;
 
   const video = await db.video.findUnique({
@@ -54,10 +52,8 @@ export async function GET(
   }
 }
 
-export async function DELETE(
-  req: Request,
-  { params }: { params: { slug: string } }
-) {
+export async function DELETE(req: Request, props: { params: Promise<{ slug: string }> }) {
+  const params = await props.params;
   const id = params.slug;
   const session = await getServerSession(authOptions);
 

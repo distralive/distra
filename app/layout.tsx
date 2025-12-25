@@ -4,7 +4,7 @@ import { ThemeProvider } from "@/components/theme-provider";
 import { SessionProvider } from "@/components/session-provider";
 import { Navbar } from "@/components/navbar";
 
-const publicSans = Public_Sans({ subsets: ["latin"], variable: "--font-sans" });
+const publicSans = Public_Sans({subsets:['latin'],variable:'--font-sans'});
 
 const inter = Inter({ subsets: ["latin"] });
 

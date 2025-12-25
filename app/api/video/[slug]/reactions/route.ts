@@ -3,10 +3,8 @@ import { db } from "@/lib/db";
 import { getServerSession } from "next-auth";
 import { z } from "zod";
 
-export async function GET(
-  req: Request,
-  { params }: { params: { slug: string } }
-) {
+export async function GET(req: Request, props: { params: Promise<{ slug: string }> }) {
+  const params = await props.params;
   const likes = await db.reaction.count({
     where: {
       videoId: params.slug,
@@ -27,10 +25,8 @@ export async function GET(
   });
 }
 
-export async function POST(
-  req: Request,
-  { params }: { params: { slug: string } }
-) {
+export async function POST(req: Request, props: { params: Promise<{ slug: string }> }) {
+  const params = await props.params;
   const session = await getServerSession(authOptions);
 
   const schema = z.object({

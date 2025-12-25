@@ -21,7 +21,8 @@ async function getUser(id: string) {
   return user;
 }
 
-export default async function User({ params }: { params: { slug: string } }) {
+export default async function User(props: { params: Promise<{ slug: string }> }) {
+  const params = await props.params;
   const data = await getUser(params.slug);
 
   return data ? (
