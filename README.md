@@ -8,21 +8,20 @@ distra is a free and open source video sharing platform that prioritizes free ac
 
 You'll need the following to run your own distra instance:
 
-- Node.js 18.x or later
-- pnpm (as the package manager)
+- Bun 1.3.x or later
 - A running PostgreSQL database (you can use Docker to run one)
 - A running MinIO instance (you can use Docker to run one)
 
 ### Clone the repository
 
 ```
-git clone https://github.com/distralive/distra && cd distra
+git clone https://github.com/frolleks/distra && cd distra
 ```
 
 ### Install the dependencies
 
 ```
-pnpm i
+bun i
 ```
 
 ### Copy the .env.example file
@@ -55,7 +54,7 @@ docker run --name distra-db -e POSTGRES_PASSWORD=my-secret-pw -p 5432:5432 -d po
 4. Migrate the schema to the database.
 
 ```
-pnpm db:push
+bun run db:push
 ```
 
 ### Setup NextAuth.js
@@ -90,7 +89,7 @@ And then, you create 3 buckets that are called `distra-videos`, `distra-private-
 To run a development server, run:
 
 ```
-pnpm dev
+bun run dev
 ```
 
 ### Build to production
@@ -98,26 +97,14 @@ pnpm dev
 To create a production build, run:
 
 ```
-pnpm build
+bun run build
 ```
 
 After that, to start the production build, run:
 
 ```
-pnpm start
+bun run start
 ```
-
-### Deploying the app
-
-If you'd choose to deploy your own instance somewhere, we would recommend these:
-
-- [Vercel](https://vercel.com) for running the Next.js app
-- [Neon](https://neon.tech) for running the database, based on PostgreSQL
-- [Amazon S3](https://aws.amazon.com/s3/) for running the object storage, which hosts the videos and thumbnails
-  - _[Cloudflare R2](https://www.cloudflare.com/products/r2/) may work, but since this app uses presigned POST urls for uploads, which isn't supported by it, we wouldn't recommend this_
-- Or just deploy it on a VPS provider you like and run everything on it. Guide is provided above.
-
-_note: We are not sponsored/endorsed by any of these sites._
 
 ## Hosted instances
 
