@@ -1,10 +1,9 @@
-import { authOptions } from "@/lib/auth";
+import { auth } from "@/lib/auth";
 import { db } from "@/lib/db";
-import { getServerSession } from "next-auth";
 
 export async function GET(req: Request, props: { params: Promise<{ slug: string }> }) {
   const params = await props.params;
-  const session = await getServerSession(authOptions);
+  const session = await auth.api.getSession({ headers: req.headers });
   const followedId = params.slug;
 
   try {
@@ -51,7 +50,7 @@ export async function GET(req: Request, props: { params: Promise<{ slug: string 
 
 export async function POST(req: Request, props: { params: Promise<{ slug: string }> }) {
   const params = await props.params;
-  const session = await getServerSession(authOptions);
+  const session = await auth.api.getSession({ headers: req.headers });
 
   try {
     if (session) {

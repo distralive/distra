@@ -1,11 +1,10 @@
-import { authOptions } from "@/lib/auth";
+import { auth } from "@/lib/auth";
 import { db } from "@/lib/db";
-import { getServerSession } from "next-auth";
 import { z } from "zod";
 
 export async function POST(req: Request, props: { params: Promise<{ slug: string }> }) {
   const params = await props.params;
-  const session = await getServerSession(authOptions);
+  const session = await auth.api.getSession({ headers: req.headers });
 
   const schema = z.object({
     videoId: z.string(),

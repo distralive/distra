@@ -1,25 +1,24 @@
-import { CommentSection } from "@/components/comment-section";
-import { FollowButton } from "@/components/follow-button";
-import { VideoPlayer } from "@/components/video-player";
-import { VideoReactionButtons } from "@/components/video-reaction-buttons";
-import { authOptions } from "@/lib/auth";
+import { CommentSection } from "@/components/video/comment-section";
+import { FollowButton } from "@/components/user/components/follow-button";
+import { VideoPlayer } from "@/components/video/components/video-player";
+import { VideoReactionButtons } from "@/components/video/components/video-reaction-buttons";
+import { auth } from "@/lib/auth";
 import { db } from "@/lib/db";
-import { s3Client } from "@/lib/s3";
-import { HeadObjectCommand } from "@aws-sdk/client-s3";
+import { s3Client } from "@/lib/storage";
 import { VideoMimeType } from "@vidstack/react";
-import { getServerSession } from "next-auth";
+import { headers } from "next/headers";
+import type { Session, User } from "better-auth";
 import Image from "next/image";
 import Link from "next/link";
 
 async function getMimeType(bucket: string, key: string) {
-  const command = new HeadObjectCommand({
-    Bucket: bucket,
-    Key: key,
-  });
-
   try {
-    const response = await s3Client.send(command);
-    return response.ContentType;
+    if (!key) {
+      return;
+    }
+    const file = s3Client.file(key, { bucket });
+    const stats = await file.stat();
+    return stats.type;
   } catch (error) {
     console.error("Error", error);
   }
@@ -60,6 +59,7 @@ async function getMetadata(v: any) {
       },
       createdAt: true,
       thumbnailKey: true,
+      duration: true,
       videoKey: true,
       reactions: true,
       videoVisibility: true,
@@ -69,15 +69,16 @@ async function getMetadata(v: any) {
   return metadata;
 }
 
-export default async function Watch(
-  props: {
-    searchParams: Promise<{ [key: string]: string | string[] | undefined }>;
-  }
-) {
+export default async function Watch(props: {
+  searchParams: Promise<{ [key: string]: string | string[] | undefined }>;
+}) {
   const searchParams = await props.searchParams;
   const { v } = searchParams;
   const metadata = await getMetadata(v);
-  const session = await getServerSession(authOptions);
+  const authSession = await auth.api.getSession({
+    headers: await headers(),
+  });
+  const session: { session: Session; user: User } | null = authSession;
 
   const url =
     metadata?.videoVisibility === "PUBLIC" ||
@@ -92,19 +93,27 @@ export default async function Watch(
   return v ? (
     <div className="p-6 flex flex-col space-y-3">
       <div className="space-y-3 pb-3 border-b">
-        <VideoPlayer videoSource={url} mimeType={mimeType as VideoMimeType} />
+        <VideoPlayer
+          videoSource={url}
+          mimeType={mimeType as VideoMimeType}
+          duration={metadata?.duration as number}
+        />
         <p className="font-semibold text-xl">{metadata?.title}</p>
         <div className="flex items-center justify-between">
           <div className="flex justify-start">
             <Link href={`/user/${metadata?.author.id}`}>
               <div className="flex space-x-2">
-                <Image
-                  alt="Frolleks' profile picture"
-                  src={metadata?.author?.image ?? ""}
-                  width={48}
-                  height={48}
-                  className="rounded-full"
-                />
+                {metadata?.author.image ? (
+                  <Image
+                    alt="Frolleks' profile picture"
+                    src={metadata?.author?.image ?? ""}
+                    width={48}
+                    height={48}
+                    className="rounded-full"
+                  />
+                ) : (
+                  <div>null</div>
+                )}
                 <div className="flex flex-col justify-start">
                   <p className="font-semibold">{metadata?.author?.name}</p>
                   <p className="text-sm text-foreground/80">

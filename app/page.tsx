@@ -1,13 +1,13 @@
-import { BottomHamburgerMenu } from "@/components/bottom-hamburger-menu";
-import { HamburgerMenu } from "@/components/hamburger-menu";
-import { RecommendedVideos } from "@/components/recommended-videos";
+import { BottomHamburgerMenu } from "@/components/navigation/bottom-hamburger-menu";
+import { HamburgerMenu } from "@/components/navigation/hamburger-menu";
+import { RecommendedVideos } from "@/components/home/recommended-videos";
 
 export default function Home() {
   return (
     <>
       <div className="flex">
         <HamburgerMenu />
-        <RecommendedVideos />
+        {/* <RecommendedVideos /> */}
       </div>
 
       <BottomHamburgerMenu />

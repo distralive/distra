@@ -1,4 +1,4 @@
-import { UploadDragDrop } from "@/components/upload-drag-drop";
+import { UploadDragDrop } from "@/components/upload/upload-drag-drop";
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
 

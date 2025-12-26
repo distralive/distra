@@ -1,10 +1,9 @@
-import { authOptions } from "@/lib/auth";
+import { auth } from "@/lib/auth";
 import { db } from "@/lib/db";
-import { getServerSession } from "next-auth";
 import { z } from "zod";
 
 export async function PUT(req: Request) {
-  const session = await getServerSession(authOptions);
+  const session = await auth.api.getSession({ headers: req.headers });
 
   const schema = z.object({
     name: z.string().min(1).max(64).optional(),

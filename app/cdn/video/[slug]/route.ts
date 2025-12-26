@@ -1,38 +1,25 @@
-import { s3Client } from "@/lib/s3";
-import { GetObjectCommand } from "@aws-sdk/client-s3";
+import { s3Client } from "@/lib/storage";
 
-export async function GET(req: Request, props: { params: Promise<{ slug: string }> }) {
+export async function GET(
+  req: Request,
+  props: { params: Promise<{ slug: string }> }
+) {
   const params = await props.params;
-  const Key = params.slug;
-
-  const getVideo = new GetObjectCommand({
-    Bucket: "distra-videos",
-    Key,
-  });
-
-  const response = await s3Client.send(getVideo);
-
-  if (!response.Body) {
-    return new Response("Video not found", { status: 404 });
-  }
-
-  // Convert the response.Body stream to a buffer
-  const streamToBuffer = async (stream: any): Promise<Buffer> => {
-    return new Promise((resolve, reject) => {
-      const chunks: Uint8Array[] = [];
-      stream.on("data", (chunk: Uint8Array) => chunks.push(chunk));
-      stream.on("error", reject);
-      stream.on("end", () => resolve(Buffer.concat(chunks)));
-    });
-  };
+  const key = params.slug;
+  const file = s3Client.file(key, { bucket: "distra-videos" });
 
   try {
-    const buffer = await streamToBuffer(response.Body);
+    const exists = await file.exists();
+    if (!exists) {
+      return new Response("Video not found", { status: 404 });
+    }
 
-    return new Response(buffer, {
+    const stats = await file.stat();
+
+    return new Response(file.stream(), {
       headers: {
-        "Content-Type": response.ContentType || "application/octet-stream",
-        "Content-Length": buffer.length.toString(),
+        "Content-Type": stats.type || "application/octet-stream",
+        "Content-Length": stats.size.toString(),
       },
     });
   } catch (error) {

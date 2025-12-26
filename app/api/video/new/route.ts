@@ -1,18 +1,14 @@
-import { authOptions } from "@/lib/auth";
+import { auth } from "@/lib/auth";
 import { db } from "@/lib/db";
-import { s3Client } from "@/lib/s3";
-import { CopyObjectCommand, DeleteObjectCommand } from "@aws-sdk/client-s3";
-import {
-  createPresignedPost,
-  type PresignedPostOptions,
-} from "@aws-sdk/s3-presigned-post";
-import { getServerSession } from "next-auth";
+import { s3Client } from "@/lib/storage";
+import { S3FilePresignOptions } from "bun";
+import { headers } from "next/headers";
 import { z } from "zod";
 
 export async function GET(req: Request) {
   let session;
   try {
-    session = await getServerSession(authOptions);
+    session = await auth.api.getSession({ headers: req.headers });
   } catch (error) {
     return new Response(
       // @ts-ignore
@@ -38,28 +34,28 @@ export async function GET(req: Request) {
 
   const videoKey = `${session.user.id}-${Date.now()}-video`;
   const thumbnailKey = `${session.user.id}-${Date.now()}-thumbnail`;
+  const { searchParams } = new URL(req.url);
+  const videoType = searchParams.get("videoType");
+  const thumbnailType = searchParams.get("thumbnailType");
 
-  const videoParams: PresignedPostOptions = {
-    Bucket: "distra-videos",
-    Key: videoKey,
-    Expires: 7200,
-    Conditions: [["starts-with", "$Content-Type", "video/"]],
+  const videoParams: S3FilePresignOptions = {
+    bucket: "distra-videos",
+    expiresIn: 7200,
+    method: "PUT",
+    type: videoType ?? "video/mp4",
   };
 
-  const thumbnailParams: PresignedPostOptions = {
-    Bucket: "distra-thumbnails",
-    Key: thumbnailKey,
-    Expires: 600,
-    Conditions: [["starts-with", "$Content-Type", "image/"]],
+  const thumbnailParams: S3FilePresignOptions = {
+    bucket: "distra-thumbnails",
+    expiresIn: 600,
+    method: "PUT",
+    type: thumbnailType ?? "image/jpeg",
   };
 
   let videoPresignedUrl, thumbnailPresignedUrl;
   try {
-    videoPresignedUrl = await createPresignedPost(s3Client, videoParams);
-    thumbnailPresignedUrl = await createPresignedPost(
-      s3Client,
-      thumbnailParams
-    );
+    videoPresignedUrl = s3Client.presign(videoKey, videoParams);
+    thumbnailPresignedUrl = s3Client.presign(thumbnailKey, thumbnailParams);
   } catch (error) {
     return new Response(
       JSON.stringify({
@@ -75,8 +71,16 @@ export async function GET(req: Request) {
 
   return new Response(
     JSON.stringify({
-      video: videoPresignedUrl,
-      thumbnail: thumbnailPresignedUrl,
+      video: {
+        url: videoPresignedUrl,
+        key: videoKey,
+        method: "PUT",
+      },
+      thumbnail: {
+        url: thumbnailPresignedUrl,
+        key: thumbnailKey,
+        method: "PUT",
+      },
     }),
     {
       status: 200,
@@ -86,7 +90,7 @@ export async function GET(req: Request) {
 }
 
 export async function POST(req: Request) {
-  const session = await getServerSession(authOptions);
+  const session = await auth.api.getSession({ headers: await headers() });
 
   const schema = z.object({
     title: z.string().max(128),
@@ -95,6 +99,7 @@ export async function POST(req: Request) {
     videoKey: z.string(),
     thumbnailKey: z.string().optional(),
     tags: z.array(z.string()).optional(),
+    duration: z.coerce.number().nonnegative().optional(),
   });
 
   async function moveS3Object(
@@ -103,24 +108,13 @@ export async function POST(req: Request) {
     objectKey: string
   ) {
     try {
-      // Copy the object
-      await s3Client.send(
-        new CopyObjectCommand({
-          Bucket: destBucket,
-          CopySource: encodeURIComponent(srcBucket + "/" + objectKey),
-          Key: objectKey,
-        })
-      );
+      const sourceFile = s3Client.file(objectKey, { bucket: srcBucket });
+      const destFile = s3Client.file(objectKey, { bucket: destBucket });
 
+      await destFile.write(sourceFile);
       console.log(`Successfully copied '${objectKey}' to '${destBucket}'.`);
 
-      // Delete the object from source bucket
-      await s3Client.send(
-        new DeleteObjectCommand({
-          Bucket: srcBucket,
-          Key: objectKey,
-        })
-      );
+      await sourceFile.delete();
 
       console.log(`Successfully deleted '${objectKey}' from '${srcBucket}'.`);
     } catch (err) {
@@ -134,13 +128,14 @@ export async function POST(req: Request) {
 
     if (session) {
       if (validBody.success) {
-        let videoData: any = {
+        const videoData: any = {
           title: validBody.data.title,
           description: validBody.data.description,
           videoVisibility: validBody.data.videoVisibility,
           videoKey: validBody.data.videoKey,
           thumbnailKey: validBody.data.thumbnailKey,
           authorId: session.user.id,
+          duration: validBody.data.duration,
         };
 
         const video = await db.video.create({

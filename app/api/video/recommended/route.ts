@@ -1,9 +1,8 @@
-import { authOptions } from "@/lib/auth";
-import { recommendVideosForUser } from "@/lib/recommended-videos";
-import { getServerSession } from "next-auth";
+import { auth } from "@/lib/auth";
+import { recommendVideosForUser } from "@/lib/video";
 
 export async function GET(req: Request) {
-  const session = await getServerSession(authOptions);
+  const session = await auth.api.getSession({ headers: req.headers });
 
   try {
     if (session) {

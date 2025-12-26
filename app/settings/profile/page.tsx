@@ -1,9 +1,13 @@
-import { ProfileForm } from "@/components/profile-form";
-import { authOptions } from "@/lib/auth";
-import { getServerSession } from "next-auth";
+import { ProfileForm } from "@/components/user/profile-form";
+import { auth } from "@/lib/auth";
+import { headers } from "next/headers";
+import { Session, User } from "better-auth";
 
 export default async function ProfileSettings() {
-  const session = await getServerSession(authOptions);
+  const authSession = await auth.api.getSession({
+    headers: await headers(),
+  });
+  const session: { session: Session; user: User } | null = authSession;
 
   return (
     <>

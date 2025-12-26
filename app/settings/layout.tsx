@@ -1,10 +1,11 @@
-import { BottomHamburgerMenu } from "@/components/bottom-hamburger-menu";
-import { SettingsButtons } from "@/components/settings-buttons";
+import type { ReactNode } from "react";
+import { BottomHamburgerMenu } from "@/components/navigation/bottom-hamburger-menu";
+import { SettingsButtons } from "@/components/settings/settings-buttons";
 
 export default function SettingsLayout({
   children,
 }: {
-  children: React.ReactNode;
+  children: ReactNode;
 }) {
   return (
     <>

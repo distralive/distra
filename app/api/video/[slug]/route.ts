@@ -1,10 +1,11 @@
-import { authOptions } from "@/lib/auth";
+import { auth } from "@/lib/auth";
 import { db } from "@/lib/db";
-import { s3Client } from "@/lib/s3";
-import { DeleteObjectCommand } from "@aws-sdk/client-s3";
-import { getServerSession } from "next-auth";
+import { s3Client } from "@/lib/storage";
 
-export async function GET(req: Request, props: { params: Promise<{ slug: string }> }) {
+export async function GET(
+  req: Request,
+  props: { params: Promise<{ slug: string }> }
+) {
   const params = await props.params;
   const id = params.slug;
 
@@ -34,6 +35,7 @@ export async function GET(req: Request, props: { params: Promise<{ slug: string 
       },
       createdAt: true,
       reactions: true,
+      duration: true,
       thumbnailKey: true,
       videoKey: true,
     },
@@ -52,10 +54,13 @@ export async function GET(req: Request, props: { params: Promise<{ slug: string 
   }
 }
 
-export async function DELETE(req: Request, props: { params: Promise<{ slug: string }> }) {
+export async function DELETE(
+  req: Request,
+  props: { params: Promise<{ slug: string }> }
+) {
   const params = await props.params;
   const id = params.slug;
-  const session = await getServerSession(authOptions);
+  const session = await auth.api.getSession({ headers: req.headers });
 
   try {
     if (session) {
@@ -66,28 +71,16 @@ export async function DELETE(req: Request, props: { params: Promise<{ slug: stri
       });
       if (video?.authorId === session?.user.id) {
         if (video.thumbnailKey) {
-          const deleteThumbnailCommand = new DeleteObjectCommand({
-            Bucket: "distra-thumbnails",
-            Key: video.thumbnailKey,
-          });
-          await s3Client.send(deleteThumbnailCommand); // Execute the command
+          s3Client.delete(video.thumbnailKey, { bucket: "distra-thumbnails" });
         }
 
         if (
           video.videoVisibility === "PUBLIC" ||
           video.videoVisibility === "UNLISTED"
         ) {
-          const deleteVideoCommand = new DeleteObjectCommand({
-            Bucket: "distra-videos",
-            Key: video.videoKey,
-          });
-          await s3Client.send(deleteVideoCommand); // Execute the command
+          s3Client.delete(video.videoKey, { bucket: "distra-videos" });
         } else {
-          const deletePrivateVideoCommand = new DeleteObjectCommand({
-            Bucket: "distra-private-videos",
-            Key: video.videoKey,
-          });
-          await s3Client.send(deletePrivateVideoCommand); // Execute the command
+          s3Client.delete(video.videoKey, { bucket: "distra-private-videos" });
         }
 
         await db.video.delete({

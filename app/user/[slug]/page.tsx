@@ -1,6 +1,6 @@
-import { ChannelCard } from "@/components/channel-card";
-import { HamburgerMenu } from "@/components/hamburger-menu";
-import { VideoCard } from "@/components/video-card";
+import { ChannelCard } from "@/components/user/channel-card";
+import { HamburgerMenu } from "@/components/navigation/hamburger-menu";
+import { VideoCard } from "@/components/video/components/video-card";
 import { db } from "@/lib/db";
 
 async function getUser(id: string) {
